@@ -7,6 +7,6 @@ namespace online_job_finder.Api.Controllers.Endpoints
     [ApiController]
     public class UsersController : ControllerBase
     {
-
+        //Test push
     }
 }
