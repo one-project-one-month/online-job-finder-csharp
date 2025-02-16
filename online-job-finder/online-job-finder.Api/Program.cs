@@ -5,6 +5,10 @@ using online_job_finder.Domain.Services.RoleServices;
 var builder = WebApplication.CreateBuilder(args);
 
 
+//builder.Services.AddDbContext<MySqlDbContext>(options =>
+//    options.UseMySql(builder.Configuration.GetConnectionString("MySqlConnection"),
+//        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("MySqlConnection"))));
+
 builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString
         ("DefaultConnection")));
