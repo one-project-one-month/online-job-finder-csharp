@@ -8,6 +8,6 @@ namespace online_job_finder.Domain.ViewModels.Roles;
 
 public class RolesViewModels
 {
-    public string RoleName { get; set; } = null!;
+    public string RoleName { get; set; } = null!;   
     
 }
