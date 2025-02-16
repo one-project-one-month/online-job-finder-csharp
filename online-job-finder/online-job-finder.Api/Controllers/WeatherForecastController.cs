@@ -14,6 +14,11 @@ namespace online_job_finder.Api.Controllers
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
+        //Test Commit _ 2 commit
+        /// <summary>
+        /// 
+        /// </summary>
+
         private readonly ILogger<WeatherForecastController> _logger;
 
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
