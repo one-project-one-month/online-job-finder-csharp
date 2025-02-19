@@ -8,12 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\online-job-finder.DataBase\online-job-finder.DataBase.csproj" />
+    <Compile Remove="Services\JobServices\**" />
+    <Compile Remove="ViewModels\Job\**" />
+    <EmbeddedResource Remove="Services\JobServices\**" />
+    <EmbeddedResource Remove="ViewModels\Job\**" />
+    <None Remove="Services\JobServices\**" />
+    <None Remove="ViewModels\Job\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\JobServices\" />
-    <Folder Include="ViewModels\Job\" />
+    <ProjectReference Include="..\online-job-finder.DataBase\online-job-finder.DataBase.csproj" />
   </ItemGroup>
 
 </Project>

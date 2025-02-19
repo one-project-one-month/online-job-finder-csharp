@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\Endpoints\Jobs\**" />
+    <Content Remove="Controllers\Endpoints\Jobs\**" />
+    <EmbeddedResource Remove="Controllers\Endpoints\Jobs\**" />
+    <None Remove="Controllers\Endpoints\Jobs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="JWT" Version="11.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.11" />
@@ -30,10 +37,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\online-job-finder.Domain\online-job-finder.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\Endpoints\Jobs\" />
   </ItemGroup>
 
 </Project>
