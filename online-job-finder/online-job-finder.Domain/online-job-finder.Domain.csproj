@@ -20,8 +20,4 @@
     <ProjectReference Include="..\online-job-finder.DataBase\online-job-finder.DataBase.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ViewModels\Job\" />
-  </ItemGroup>
-
 </Project>
