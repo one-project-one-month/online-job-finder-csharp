@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using online_job_finder.DataBase.Models;
 using online_job_finder.Domain.ViewModels;
-using static Google.Protobuf.Reflection.SourceCodeInfo.Types;
 
 namespace online_job_finder.Domain.Services.RoleServices;
 
