@@ -1,18 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using online_job_finder.DataBase.Models;
-using online_job_finder.Domain.Services.UsersServices;
-using online_job_finder.Domain.ViewModels.Roles;
-using online_job_finder.Domain.ViewModels.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using online_job_finder.Domain.ViewModels;
+using static Google.Protobuf.Reflection.SourceCodeInfo.Types;
 
 namespace online_job_finder.Domain.Services.RoleServices;
 
-public class RoleRepository
+public class RoleRepository : IRoleRepository
 {
     private readonly AppDbContext _db;
 
@@ -22,17 +15,17 @@ public class RoleRepository
     }
 
     // BLL
-    public TblRole CreateRole(RolesViewModels roles)
+    public RolesViewModels CreateRole(RolesViewModels model)
     {
+        model.Version += 1;
+        model.UpdatedAt = null;
 
-        TblRole rolesModel = RolesMapping(roles);
+        TblRole roles = RolesMapping(model);
 
-        rolesModel.UpdatedAt = null; // Need to amend and take out
-
-        _db.TblRoles.Add(rolesModel);
+        _db.TblRoles.Add(roles);
         _db.SaveChanges();
 
-        return rolesModel;
+        return model;
     }
 
     public List<RolesViewModels> GetRoles()
@@ -53,7 +46,7 @@ public class RoleRepository
         var model = _db.TblRoles
             .AsNoTracking()
             .FirstOrDefault(x => x.RoleId.ToString() == id
-            && x.IsDelete == false );
+            && x.IsDelete == false);
 
         if (model is null) { return null; }
 
@@ -62,7 +55,7 @@ public class RoleRepository
         return mappingModel;
     }
 
-    public RolesViewModels? UpdateRole(string id, RolesViewModels roles)
+    public RolesViewModels? UpdateRole(string id, RolesViewModels models)
     {
         var item = _db.TblRoles
             .AsNoTracking()
@@ -70,22 +63,23 @@ public class RoleRepository
             && x.IsDelete == false);
         if (item is null) { return null; }
 
-        if (!string.IsNullOrEmpty(roles.RoleName))
+        if (!string.IsNullOrEmpty(models.RoleName))
         {
-            item.RoleName = roles.RoleName;
+            item.RoleName = models.RoleName;
         }
 
+        item.Version += 1;
         item.UpdatedAt = DateTime.UtcNow;
 
         _db.Entry(item).State = EntityState.Modified;
         _db.SaveChanges();
 
-        var model = RolesViewModelsMapping(item);
+        models = RolesViewModelsMapping(item);
 
-        return model;
+        return models;
     }
 
-    public RolesViewModels? PatchRole(string id, RolesViewModels roles)
+    public RolesViewModels? PatchRole(string id, RolesViewModels models)
     {
         var item = _db.TblRoles
             .AsNoTracking()
@@ -93,18 +87,19 @@ public class RoleRepository
             && x.IsDelete == false);
         if (item is null) { return null; }
 
-        if (!string.IsNullOrEmpty(roles.RoleName))
+        if (!string.IsNullOrEmpty(models.RoleName))
         {
-            item.RoleName = roles.RoleName;
+            item.RoleName = models.RoleName;
         }
 
+        item.Version += 1;
         item.UpdatedAt = DateTime.UtcNow;
 
         _db.Entry(item).State = EntityState.Modified;
         _db.SaveChanges();
 
-        var model = RolesViewModelsMapping(item);
-        return roles;
+        models = RolesViewModelsMapping(item);
+        return models;
     }
 
     public bool? DeleteRole(string id)
@@ -118,6 +113,7 @@ public class RoleRepository
             return null;
         }
 
+        item.Version += 1;
         item.UpdatedAt = DateTime.UtcNow;
         item.IsDelete = true;
 
@@ -135,9 +131,9 @@ public class RoleRepository
         {
             RoleId = Guid.NewGuid(),
             RoleName = roles.RoleName,
-            //Version = roles.Version,
-            //CreatedAt = roles.CreatedAt,
-            //UpdatedAt = roles.UpdatedAt,
+            Version = roles.Version,
+            CreatedAt = roles.CreatedAt,
+            UpdatedAt = roles.UpdatedAt,
             IsDelete = false
         };
     }
@@ -148,9 +144,9 @@ public class RoleRepository
         {
             //RoleId = Guid.NewGuid(),
             RoleName = roles.RoleName,
-            //Version = roles.Version,
-            //CreatedAt = roles.CreatedAt,
-            //UpdatedAt = roles.UpdatedAt,
+            Version = roles.Version,
+            CreatedAt = roles.CreatedAt,
+            UpdatedAt = roles.UpdatedAt,
             //IsDelete = false
         };
     }
