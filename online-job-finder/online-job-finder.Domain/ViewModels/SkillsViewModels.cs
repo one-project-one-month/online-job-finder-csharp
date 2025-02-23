@@ -1,6 +1,4 @@
-﻿using online_job_finder.DataBase.Models;
-
-namespace online_job_finder.Domain.ViewModels;
+﻿namespace online_job_finder.Domain.ViewModels;
 
 public class SkillsViewModels
 {
