@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using online_job_finder.DataBase.Models;
 using online_job_finder.Domain.Services.RoleServices;
-using online_job_finder.Domain.ViewModels.Roles;
-using online_job_finder.Domain.ViewModels.Users;
-using System.Data;
+using online_job_finder.Domain.Services.SkillServices;
+using online_job_finder.Domain.ViewModels;
 
 namespace online_job_finder.Api.Controllers.Endpoints
 {
@@ -11,18 +10,18 @@ namespace online_job_finder.Api.Controllers.Endpoints
     [ApiController]
     public class RolesController : ControllerBase
     {
-        private readonly RoleRepository _roleRepository;
+        private readonly IRoleRepository _roleRepository;
 
         public RolesController()
         {
             _roleRepository = new RoleRepository();
         }
 
-        [HttpGet("HelloWorld")]
-        public IActionResult HelloWorld()
-        {
-            return Ok("Hello Worlds");
-        }
+        //[HttpGet("HelloWorld")]
+        //public IActionResult HelloWorld()
+        //{
+        //    return Ok("Hello Worlds");
+        //}
 
         [HttpGet("GetRoles")]
         public IActionResult GetRoles()
