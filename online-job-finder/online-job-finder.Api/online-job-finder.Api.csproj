@@ -39,4 +39,8 @@
     <ProjectReference Include="..\online-job-finder.Domain\online-job-finder.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\Endpoints\Jobs\" />
+  </ItemGroup>
+
 </Project>
