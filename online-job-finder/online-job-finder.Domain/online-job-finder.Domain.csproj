@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\JobServices\" />
     <Folder Include="ViewModels\Job\" />
   </ItemGroup>
 
