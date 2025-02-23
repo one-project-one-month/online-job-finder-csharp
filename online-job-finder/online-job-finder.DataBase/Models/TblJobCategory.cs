@@ -1,17 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace online_job_finder.DataBase.Models
+namespace online_job_finder.DataBase.Models;
+
+public partial class TblJobCategory
 {
-    public partial class TblJobCategory
-    {
-        public Guid JobCategoryID { get; set; }
+    public Guid JobCategoriesId { get; set; }
 
-        public string CategoryName { get; set; } = null!;
+    public string Industry { get; set; } = null!;
 
-        public string SoftDelete { get; set; } = null!;
-    }
+    public string Description { get; set; } = null!;
+
+    public int Version { get; set; }
+
+    public DateTime CreatedAt { get; set; }
+
+    public DateTime? UpdatedAt { get; set; }
+
+    public bool IsDelete { get; set; }
+
+    public virtual ICollection<TblApplicantJobCategory> TblApplicantJobCategories { get; set; } = new List<TblApplicantJobCategory>();
+
+    public virtual ICollection<TblJob> TblJobs { get; set; } = new List<TblJob>();
 }
