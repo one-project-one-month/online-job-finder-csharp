@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using online_job_finder.DataBase.Models;
 using online_job_finder.Domain.Services.JobCategoryServices;
+using online_job_finder.Domain.Services.JobServices;
 using online_job_finder.Domain.Services.LocationServices;
 using online_job_finder.Domain.Services.RoleServices;
 using online_job_finder.Domain.Services.SkillServices;
@@ -75,7 +76,7 @@ builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
 
 // I add some folders in here
-
+builder.Services.AddScoped<JobRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
