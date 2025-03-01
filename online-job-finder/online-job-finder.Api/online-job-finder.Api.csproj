@@ -7,11 +7,7 @@
     <RootNamespace>online_job_finder.Api</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Controllers\Endpoints\Jobs\**" />
-    <Content Remove="Controllers\Endpoints\Jobs\**" />
-    <EmbeddedResource Remove="Controllers\Endpoints\Jobs\**" />
-    <None Remove="Controllers\Endpoints\Jobs\**" />
+  <ItemGroup>    
   </ItemGroup>
 
   <ItemGroup>
