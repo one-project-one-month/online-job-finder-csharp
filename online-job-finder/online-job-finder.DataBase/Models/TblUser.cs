@@ -15,7 +15,11 @@ public partial class TblUser
 
     public string Email { get; set; } = null!;
 
-    public string Password { get; set; } = null!;
+    public string PasswordHash { get; set; } = null!;
+
+    public string? RefreshToken { get; set; }
+
+    public DateTime? RefreshTokenExpiryTime { get; set; }
 
     public bool IsInformationCompleted { get; set; }
 
