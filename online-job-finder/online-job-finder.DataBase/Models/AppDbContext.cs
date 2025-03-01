@@ -52,10 +52,8 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<TblUser> TblUsers { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer("Server=MSI\\SQLEXPRESS2022; Database=onlinejobfinder; User Id=sa; Password=sasa; TrustServerCertificate=True;");
-        //optionsBuilder.UseSqlServer("Server=.; Database=onlinejobfinder; User Id=sa; Password=sasa; TrustServerCertificate=True;");
-    }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=MSI\\SQLEXPRESS2022; Database=onlinejobfinder; User Id=sa; Password=sasa; TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -515,6 +513,8 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.IsInformationCompleted).HasColumnName("Is_Information_Completed");
             entity.Property(e => e.ProfilePhoto).HasColumnName("Profile_Photo");
             entity.Property(e => e.RoleId).HasColumnName("Role_Id");
+            entity.Property(e => e.RefreshToken).HasColumnName("RefreshToken");
+            entity.Property(e => e.RefreshTokenExpiryTime).HasColumnName("RefreshTokenExpiryTime");
             entity.Property(e => e.UpdatedAt).HasColumnName("Updated_at");
 
             entity.HasOne(d => d.Role).WithMany(p => p.TblUsers)
