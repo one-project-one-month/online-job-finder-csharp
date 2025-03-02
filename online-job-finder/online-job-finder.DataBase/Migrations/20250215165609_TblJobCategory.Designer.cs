@@ -12,8 +12,8 @@ using online_job_finder.DataBase.Models;
 namespace online_job_finder.DataBase.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250214160210_initialCreate")]
-    partial class initialCreate
+    [Migration("20250215165609_TblJobCategory")]
+    partial class TblJobCategory
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,92 @@ namespace online_job_finder.DataBase.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("online_job_finder.DataBase.Models.CompanyProfile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id")
+                        .HasDefaultValueSql("(newid())");
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("address");
+
+                    b.Property<string>("CompanyName")
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("company_name");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<string>("Description")
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(max)")
+                        .HasColumnName("description");
+
+                    b.Property<string>("LocationId")
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("location_id");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("phone");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("(getdate())");
+
+                    b.Property<string>("UserId")
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("user_id");
+
+                    b.Property<int?>("Version")
+                        .HasColumnType("int")
+                        .HasColumnName("version");
+
+                    b.Property<string>("Website")
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("website");
+
+                    b.HasKey("Id")
+                        .HasName("PK__company___3213E83F7BEECB56");
+
+                    b.ToTable("company_profiles", (string)null);
+                });
+
+            modelBuilder.Entity("online_job_finder.DataBase.Models.TblJobCategory", b =>
+                {
+                    b.Property<Guid>("JobCategoryID")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("JobCategeory_Id");
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("JobCategoryID");
+
+                    b.ToTable("Tbl_JobCategories", (string)null);
+                });
 
             modelBuilder.Entity("online_job_finder.DataBase.Models.TblRole", b =>
                 {
@@ -49,7 +135,6 @@ namespace online_job_finder.DataBase.Migrations
                         .HasColumnName("Updated_at");
 
                     b.Property<int>("Version")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("int");
 
                     b.HasKey("RoleId");
@@ -112,7 +197,7 @@ namespace online_job_finder.DataBase.Migrations
 
                     b.HasKey("UserId");
 
-                    b.HasIndex("RoleId");
+                    b.HasIndex(new[] { "RoleId" }, "IX_Tbl_Users_Role_Id");
 
                     b.ToTable("Tbl_Users", (string)null);
                 });

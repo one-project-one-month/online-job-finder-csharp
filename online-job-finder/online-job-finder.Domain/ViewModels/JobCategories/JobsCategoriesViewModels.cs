@@ -4,14 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace online_job_finder.DataBase.Models
+namespace online_job_finder.Domain.ViewModels.JobCategories
 {
-    public partial class TblJobCategory
+    public class JobsCategoriesViewModels
     {
-        public Guid JobCategoryID { get; set; }
+        public string JobCategoryID { get; set; } = null!;
 
         public string CategoryName { get; set; } = null!;
-
-        
     }
 }

@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using online_job_finder.DataBase.Models;
+using online_job_finder.Domain.Services.JobCategoriesServices;
+using online_job_finder.Domain.Services.LocationServices;
 using online_job_finder.Domain.Services.RoleServices;
+using online_job_finder.Domain.Services.SkillServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +20,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<RoleRepository>();
+
+
+builder.Services.AddScoped<JobCategoryRepository>();
+builder.Services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
+
+builder.Services.AddScoped<SkillRepository>();
+builder.Services.AddScoped<ISkillRepository, SkillRepository>();
+
+builder.Services.AddScoped<LocationRepository>();
+builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 
 
 var app = builder.Build();

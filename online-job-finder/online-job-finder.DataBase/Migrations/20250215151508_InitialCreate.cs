@@ -6,11 +6,32 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace online_job_finder.DataBase.Migrations
 {
     /// <inheritdoc />
-    public partial class initialCreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "company_profiles",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
+                    user_id = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    company_name = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    phone = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
+                    website = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    address = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    location_id = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    description = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    version = table.Column<int>(type: "int", nullable: true),
+                    created_at = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
+                    updated_at = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__company___3213E83F7BEECB56", x => x.id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Tbl_Role",
                 columns: table => new
@@ -63,6 +84,9 @@ namespace online_job_finder.DataBase.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "company_profiles");
+
             migrationBuilder.DropTable(
                 name: "Tbl_Users");
 

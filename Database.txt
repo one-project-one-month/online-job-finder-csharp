@@ -1,0 +1,52 @@
+Online Job Finder
+
+Applicants
+
+Company
+- CompanyName
+- Description
+- CompanyYear
+- Category
+- CompanyLogo
+
+Social Media Links
+- CompanyID
+- Social Media Name
+- Url
+
+Reviews
+- CompanyID
+- ApplicantID
+- Message
+- RatingNumber (1 to 5)
+
+JobRating
+
+Jobs
+- Job Title
+- Job Requirements (Tech Stack)
+- Description
+- Salary Range 
+- Position
+- Job Type (Remote / Hybrid / On site)
+- Location
+- Contact Info
+- Job Category
+- Time Interval (eg. 9 AM to 6 PM)
+- File Upload
+- Experience Year
+- Gender (Male / Female / Any)
+- Total Post
+
+Job Requirements
+- JobID
+- Job Requirements
+
+
+
+
+6. Admin
+- /admin
+- /skills
+- /admin/locations
+- /admin/job-categories

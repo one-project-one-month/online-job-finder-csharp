@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using online_job_finder.DataBase.Models;
 
@@ -11,9 +12,11 @@ using online_job_finder.DataBase.Models;
 namespace online_job_finder.DataBase.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250215151508_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,36 +96,6 @@ namespace online_job_finder.DataBase.Migrations
                     b.ToTable("company_profiles", (string)null);
                 });
 
-            modelBuilder.Entity("online_job_finder.DataBase.Models.TblJobCategory", b =>
-                {
-                    b.Property<Guid>("JobCategoryID")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("JobCategeory_Id");
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("JobCategoryID");
-
-                    b.ToTable("Tbl_JobCategories", (string)null);
-                });
-
-            modelBuilder.Entity("online_job_finder.DataBase.Models.TblLocation", b =>
-                {
-                    b.Property<Guid>("LocationID")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("Location_ID");
-
-                    b.Property<string>("LocationName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("LocationID");
-
-                    b.ToTable("Tbl_Locations", (string)null);
-                });
-
             modelBuilder.Entity("online_job_finder.DataBase.Models.TblRole", b =>
                 {
                     b.Property<Guid>("RoleId")
@@ -152,21 +125,6 @@ namespace online_job_finder.DataBase.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("Tbl_Role", (string)null);
-                });
-
-            modelBuilder.Entity("online_job_finder.DataBase.Models.TblSkill", b =>
-                {
-                    b.Property<Guid>("SkillID")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("Skill_Id");
-
-                    b.Property<string>("SkillName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("SkillID");
-
-                    b.ToTable("Tbl_Skills", (string)null);
                 });
 
             modelBuilder.Entity("online_job_finder.DataBase.Models.TblUser", b =>

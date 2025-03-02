@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace online_job_finder.DataBase.Models
 {
-    public partial class TblJobCategory
+    public class TblSkill
     {
-        public Guid JobCategoryID { get; set; }
+        public Guid SkillID { get; set; }
 
-        public string CategoryName { get; set; } = null!;
-
-        
+        public string SkillName { get; set; } = null!;
     }
 }
