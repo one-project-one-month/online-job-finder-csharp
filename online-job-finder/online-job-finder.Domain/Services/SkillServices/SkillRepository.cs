@@ -38,6 +38,7 @@ namespace online_job_finder.Domain.Services.SkillServices
         {
             var model = _db.TblSkills
                 .AsNoTracking()
+                .Where(x => x.IsDelete == false)
                 .ToList();
 
             var skillViewModels = model.Select(SkillViewModelsMapping).ToList();
@@ -50,6 +51,7 @@ namespace online_job_finder.Domain.Services.SkillServices
             var model = _db.TblSkills
                 .AsNoTracking()
                 .FirstOrDefault(x => x.SkillID.ToString() == id
+                && x.IsDelete == false
                 );
 
             if (model is null) { return null; }
@@ -64,6 +66,7 @@ namespace online_job_finder.Domain.Services.SkillServices
             var item = _db.TblSkills
                 .AsNoTracking()
                 .FirstOrDefault(x => x.SkillID.ToString() == id
+                && x.IsDelete == false
                 );
             if (item is null) { return null; }
 
@@ -87,6 +90,7 @@ namespace online_job_finder.Domain.Services.SkillServices
             var item = _db.TblSkills
                 .AsNoTracking()
                 .FirstOrDefault(x => x.SkillID.ToString() == id
+                && x.IsDelete == false
                 );
             if (item is null) { return null; }
 
@@ -109,13 +113,14 @@ namespace online_job_finder.Domain.Services.SkillServices
             var item = _db.TblSkills
                 .AsNoTracking()
                 .FirstOrDefault(x => x.SkillID.ToString() == id
+                && x.IsDelete == false
                 );
             if (item is null)
             {
                 return null;
             }
 
-
+            item.IsDelete= true;    
 
 
             _db.Entry(item).State = EntityState.Modified;
@@ -130,7 +135,8 @@ namespace online_job_finder.Domain.Services.SkillServices
             return new TblSkill
             {
                 SkillID = Guid.NewGuid(),
-                SkillName = skills.SkillName
+                SkillName = skills.SkillName,
+                IsDelete=false
             };
         }
 

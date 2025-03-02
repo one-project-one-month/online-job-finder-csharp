@@ -36,7 +36,8 @@ namespace online_job_finder.Domain.Services.JobCategoriesServices
         public List<JobsCategoriesViewModels> GetJobCategories()
         {
             var model = _db.TblJobCategories
-                .AsNoTracking()                            
+                .AsNoTracking()
+                .Where(x => x.IsDelete == false)
                 .ToList();
 
             var jobCategoriesViewModels = model.Select(JobsCategoriesViewModelsMapping).ToList();
@@ -49,6 +50,7 @@ namespace online_job_finder.Domain.Services.JobCategoriesServices
             var model = _db.TblJobCategories
                 .AsNoTracking()
                 .FirstOrDefault(x => x.JobCategoryID.ToString() == id
+                && x.IsDelete == false
                 );
 
             if (model is null) { return null; }
@@ -63,6 +65,7 @@ namespace online_job_finder.Domain.Services.JobCategoriesServices
             var item = _db.TblJobCategories
                 .AsNoTracking()
                 .FirstOrDefault(x => x.JobCategoryID.ToString() == id
+                && x.IsDelete == false
                 );
             if (item is null) { return null; }
 
@@ -86,6 +89,7 @@ namespace online_job_finder.Domain.Services.JobCategoriesServices
             var item = _db.TblJobCategories
                 .AsNoTracking()
                 .FirstOrDefault(x => x.JobCategoryID.ToString() == id
+                && x.IsDelete == false
                 );
             if (item is null) { return null; }
 
@@ -108,14 +112,15 @@ namespace online_job_finder.Domain.Services.JobCategoriesServices
             var item = _db.TblJobCategories
                 .AsNoTracking()
                 .FirstOrDefault(x => x.JobCategoryID.ToString() == id
+                && x.IsDelete == false
                 );
             if (item is null)
             {
                 return null;
             }
 
-            
-            
+
+            item.IsDelete = true;
 
             _db.Entry(item).State = EntityState.Modified;
             var result = _db.SaveChanges();
@@ -129,7 +134,8 @@ namespace online_job_finder.Domain.Services.JobCategoriesServices
             return new TblJobCategory
             {
                 JobCategoryID = Guid.NewGuid(),
-                CategoryName = jobsCategories.CategoryName              
+                CategoryName = jobsCategories.CategoryName ,
+                IsDelete = false
             };
         }
 

@@ -11,5 +11,7 @@ namespace online_job_finder.DataBase.Models
         public Guid SkillID { get; set; }
 
         public string SkillName { get; set; } = null!;
+
+        public bool IsDelete { get; set; }
     }
 }

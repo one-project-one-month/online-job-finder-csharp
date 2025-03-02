@@ -37,6 +37,7 @@ namespace online_job_finder.Domain.Services.LocationServices
         {
             var model = _db.TblLocations
                 .AsNoTracking()
+                .Where(x => x.IsDelete == false)
                 .ToList();
 
             var locationViewModels = model.Select(LocationViewModelsMapping).ToList();
@@ -49,6 +50,7 @@ namespace online_job_finder.Domain.Services.LocationServices
             var model = _db.TblLocations
                 .AsNoTracking()
                 .FirstOrDefault(x => x.LocationID.ToString() == id
+                && x.IsDelete == false
                 );
 
             if (model is null) { return null; }
@@ -63,6 +65,7 @@ namespace online_job_finder.Domain.Services.LocationServices
             var item = _db.TblLocations
                 .AsNoTracking()
                 .FirstOrDefault(x => x.LocationID.ToString() == id
+                && x.IsDelete == false
                 );
             if (item is null) { return null; }
 
@@ -86,6 +89,8 @@ namespace online_job_finder.Domain.Services.LocationServices
             var item = _db.TblLocations
                 .AsNoTracking()
                 .FirstOrDefault(x => x.LocationID.ToString() == id
+                && x.IsDelete == false
+
                 );
             if (item is null) { return null; }
 
@@ -108,6 +113,7 @@ namespace online_job_finder.Domain.Services.LocationServices
             var item = _db.TblLocations
                 .AsNoTracking()
                 .FirstOrDefault(x => x.LocationID.ToString() == id
+                && x.IsDelete == false
                 );
             if (item is null)
             {
@@ -115,7 +121,7 @@ namespace online_job_finder.Domain.Services.LocationServices
             }
 
 
-
+            item.IsDelete = true;
 
             _db.Entry(item).State = EntityState.Modified;
             var result = _db.SaveChanges();
@@ -129,7 +135,8 @@ namespace online_job_finder.Domain.Services.LocationServices
             return new TblLocation
             {
                 LocationID = Guid.NewGuid(),
-                LocationName = location.LocationName
+                LocationName = location.LocationName,
+                IsDelete=false
             };
         }
 
@@ -140,6 +147,7 @@ namespace online_job_finder.Domain.Services.LocationServices
             {
 
                 LocationName = location.LocationName,
+                
 
             };
         }

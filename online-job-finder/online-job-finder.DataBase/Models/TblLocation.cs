@@ -11,7 +11,9 @@ namespace online_job_finder.DataBase.Models
         public Guid LocationID { get; set; }
 
         public string LocationName { get; set; } = null!;
-       
+
+        public bool IsDelete { get; set; }
+
 
     }
 }
