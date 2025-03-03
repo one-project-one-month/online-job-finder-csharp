@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using online_job_finder.Domain.Services.JobCategoryServices;
 using online_job_finder.Domain.ViewModels;
 
@@ -79,6 +80,15 @@ namespace online_job_finder.Api.Controllers.Endpoints
                 return BadRequest("Don`t have data");
             }
             return Ok("Deleting success");
+        }
+
+        [Authorize(Roles = "Admins")]
+        [HttpGet("/admins/job-categories/GetJobCategories")]
+        public IActionResult GetForAdminsJobCategories()
+        {
+            var items = _jobCategoryRepository.GetJobCategories();
+
+            return Ok(items);
         }
     }
 }
