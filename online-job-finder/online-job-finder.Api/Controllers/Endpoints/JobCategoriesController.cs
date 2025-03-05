@@ -1,94 +1,77 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using online_job_finder.Domain.Services.JobCategoryServices;
-using online_job_finder.Domain.ViewModels;
+﻿namespace online_job_finder.Api.Controllers.Endpoints;
 
-namespace online_job_finder.Api.Controllers.Endpoints
+
+[Authorize(Roles = "Admins")]
+[Route("api/admins/[controller]")]
+[ApiController]
+public class jobcategoriesController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class JobCategoriesController : ControllerBase
+    private readonly IJobCategoryRepository _jobCategoryRepository;
+
+    public jobcategoriesController()
     {
-        private readonly IJobCategoryRepository _jobCategoryRepository;
+        _jobCategoryRepository = new JobCategoryRepository();
+    }
 
-        public JobCategoriesController()
+    [HttpGet("getjobcategories")]
+    public async Task<IActionResult> GetJobCategories()
+    {
+        var items = await _jobCategoryRepository.GetJobCategories();
+
+        return Ok(items);
+    }
+
+    [HttpGet("getjobcategory")]
+    public async Task<IActionResult> GetJobCategory(string id)
+    {
+        var items = await _jobCategoryRepository.GetJobCategory(id);
+
+        return Ok(items);
+    }
+
+    [HttpPost("createjobcategory")]
+    public async Task<IActionResult> CreateJobCategory(JobCategoryViewModels models)
+    {
+        var items = await _jobCategoryRepository.CreateJobCategory(models);
+
+        return Ok(items);
+    }
+
+    [HttpPut("updatejobcategory")]
+    public async Task<IActionResult> UpdateJobCategory(string id, JobCategoryViewModels models)
+    {
+
+        var item = await _jobCategoryRepository.UpdateJobCategory(id, models);
+
+        if (item is null)
         {
-            _jobCategoryRepository = new JobCategoryRepository();
+            return BadRequest("Don`t have data");
         }
+        return Ok(item);
+    }
 
-        [HttpGet("GetJobCategories")]
-        public IActionResult GetJobCategories()
+    [HttpPatch("patchjobcategory")]
+    public async Task<IActionResult> PatchJobCategory(string id, JobCategoryViewModels models)
+    {
+
+        var item = await _jobCategoryRepository.PatchJobCategory(id, models);
+
+        if (item is null)
         {
-            var items = _jobCategoryRepository.GetJobCategories();
-
-            return Ok(items);
+            return BadRequest("Don`t have data");
         }
+        return Ok(item);
+    }
 
-        [HttpGet("GetJobCategory/{id}")]
-        public IActionResult GetJobCategory(string id)
+    [HttpDelete("deletejobcategory")]
+    public async Task<IActionResult> DeleteJobCategory(string id)
+    {
+        var item = await _jobCategoryRepository.DeleteJobCategory(id);
+
+        if (item is null)
         {
-            var items = _jobCategoryRepository.GetJobCategory(id);
-
-            return Ok(items);
+            return BadRequest("Don`t have data");
         }
-
-        [HttpPost("CreateJobCategory")]
-        public IActionResult CreateJobCategory(JobCategoryViewModels models)
-        {
-            var items = _jobCategoryRepository.CreateJobCategory(models);
-
-            return Ok(items);
-        }
-
-        [HttpPut("UpdateJobCategory/{id}")]
-        public IActionResult UpdateJobCategory(string id, JobCategoryViewModels models)
-        {
-
-            var item = _jobCategoryRepository.UpdateJobCategory(id, models);
-
-            // need to write reponse & request
-
-            if (item is null)
-            {
-                return BadRequest("Don`t have data");
-            }
-            return Ok(item);
-        }
-
-        [HttpPatch("PatchJobCategory/{id}")]
-        public IActionResult PatchJobCategory(string id, JobCategoryViewModels models)
-        {
-
-            var item = _jobCategoryRepository.PatchJobCategory(id, models);
-
-            // need to write reponse & request
-
-            if (item is null)
-            {
-                return BadRequest("Don`t have data");
-            }
-            return Ok(item);
-        }
-
-        [HttpDelete("DeleteJobCategory/{id}")]
-        public IActionResult DeleteJobCategory(string id)
-        {
-            var item = _jobCategoryRepository.DeleteJobCategory(id);
-
-            if (item is null)
-            {
-                return BadRequest("Don`t have data");
-            }
-            return Ok("Deleting success");
-        }
-
-        [Authorize(Roles = "Admins")]
-        [HttpGet("/admins/job-categories/GetJobCategories")]
-        public IActionResult GetForAdminsJobCategories()
-        {
-            var items = _jobCategoryRepository.GetJobCategories();
-
-            return Ok(items);
-        }
+        return Ok("Deleting success");
     }
 }

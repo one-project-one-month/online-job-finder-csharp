@@ -1,18 +1,16 @@
-﻿using online_job_finder.Domain.ViewModels;
-
-namespace online_job_finder.Domain.Services.SkillServices;
+﻿namespace online_job_finder.Domain.Services.SkillServices;
 
 public interface ISkillRepository
 {
-    SkillsViewModels CreateSkill(SkillsViewModels Skills);
+    Task<SkillsViewModels> CreateSkill(SkillsViewModels Skills);
 
-    List<SkillsViewModels> GetSkills();
+    Task<List<SkillsViewModels>> GetSkills();
 
-    SkillsViewModels? GetSkill(string id);
+    Task<SkillsViewModels?> GetSkill(string id);
 
-    SkillsViewModels? UpdateSkill(string id, SkillsViewModels Skills);
+    Task<SkillsViewModels?> UpdateSkill(string id, SkillsViewModels Skills);
 
-    SkillsViewModels? PatchSkill(string id, SkillsViewModels Skills);
+    Task<SkillsViewModels?> PatchSkill(string id, SkillsViewModels Skills);
 
-    bool? DeleteSkill(string id);
+    Task<bool?> DeleteSkill(string id);
 }

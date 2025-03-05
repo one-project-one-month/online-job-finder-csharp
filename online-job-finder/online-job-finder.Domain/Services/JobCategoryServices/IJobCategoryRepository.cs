@@ -1,18 +1,16 @@
-﻿using online_job_finder.Domain.ViewModels;
-
-namespace online_job_finder.Domain.Services.JobCategoryServices;
+﻿namespace online_job_finder.Domain.Services.JobCategoryServices;
 
 public interface IJobCategoryRepository
 {
-    JobCategoryViewModels CreateJobCategory(JobCategoryViewModels models);
+    Task<JobCategoryViewModels> CreateJobCategory(JobCategoryViewModels models);
 
-    List<JobCategoryViewModels> GetJobCategories();
+    Task<List<JobCategoryViewModels>> GetJobCategories();
 
-    JobCategoryViewModels? GetJobCategory(string id);
+    Task<JobCategoryViewModels?> GetJobCategory(string id);
 
-    JobCategoryViewModels? UpdateJobCategory(string id, JobCategoryViewModels models);
+    Task<JobCategoryViewModels?> UpdateJobCategory(string id, JobCategoryViewModels models);
 
-    JobCategoryViewModels? PatchJobCategory(string id, JobCategoryViewModels models);
+    Task<JobCategoryViewModels?> PatchJobCategory(string id, JobCategoryViewModels models);
 
-    bool? DeleteJobCategory(string id);
+    Task<bool?> DeleteJobCategory(string id);
 }

@@ -1,16 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using online_job_finder.DataBase.Models;
-using online_job_finder.Domain.ViewModels;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
-
-namespace online_job_finder.Domain.Services.UsersServices;
+﻿namespace online_job_finder.Domain.Services.UsersServices;
 
 public class UserRepository : IUserRepository
 {
@@ -23,7 +11,7 @@ public class UserRepository : IUserRepository
         _configuration = configuration;
     }
 
-    #region Authentication & Authorization
+    #region Authentication & Authorization 
 
     public async Task<UsersViewModels?> RegisterAsync(UsersViewModels request)
     {
@@ -87,6 +75,37 @@ public class UserRepository : IUserRepository
             return null;
 
         return await CreateTokenResponse(user);
+    }
+
+    public async Task<UsersViewModels?> ChangePassword(string id, ChangePasswordRequest request)
+    {
+        var HashedOldPassword = new PasswordHasher<ChangePasswordRequest>()
+        .HashPassword(request, request.OldPassword);
+
+        var HashedNewPassword = new PasswordHasher<ChangePasswordRequest>()
+        .HashPassword(request, request.NewPassword);
+
+        var user = await _db.TblUsers
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.UserId.ToString() == id && u.IsDelete == false);
+
+        if (user is null) return null;
+
+        var unhashed = new PasswordHasher<TblUser>().VerifyHashedPassword
+            (user!, user!.PasswordHash, request.OldPassword);
+
+        if (unhashed == PasswordVerificationResult.Failed) return null;
+
+        user.PasswordHash = HashedNewPassword;
+        user.Version += 1;
+        user.UpdatedAt = DateTime.UtcNow;
+
+        _db.Entry(user).State = EntityState.Modified;
+        await _db.SaveChangesAsync();
+
+        var models = UsersViewModelsMapping(user);
+
+        return models;
     }
 
 
@@ -167,24 +186,24 @@ public class UserRepository : IUserRepository
     #endregion
 
     #region CRUD
-    public List<UsersViewModels> GetUsers()
+    public async Task<List<UsersViewModels>> GetUsers()
     {
-        var model = _db.TblUsers
+        var model = await _db.TblUsers
             .AsNoTracking()
             .Where(x => x.IsDelete == false)
             .OrderBy(x => x.Version)
-            .ToList();
+            .ToListAsync();
 
         var viewModels = model.Select(UsersViewModelsMapping).ToList();
 
         return viewModels;
     }
 
-    public UsersViewModels? GetUser(string id)
+    public async Task<UsersViewModels?> GetUser(string id)
     {
-        var model = _db.TblUsers
+        var model = await _db.TblUsers
             .AsNoTracking()
-            .FirstOrDefault(x => x.UserId.ToString() == id
+            .FirstOrDefaultAsync(x => x.UserId.ToString() == id
             && x.IsDelete == false);
 
         if (model is null) { return null; }
@@ -194,12 +213,13 @@ public class UserRepository : IUserRepository
         return viewModel;
     }
 
-    public UsersViewModels? UpdateUser(string id, UsersViewModels models)
+    public async Task<UsersViewModels?> UpdateUser(string id, UsersViewModels models)
     {
-        var item = _db.TblUsers
+        var item = await _db.TblUsers
             .AsNoTracking()
-            .FirstOrDefault(x => x.UserId.ToString() == id
+            .FirstOrDefaultAsync(x => x.UserId.ToString() == id
             && x.IsDelete == false);
+
         if (item is null) { return null; }
 
         if (!string.IsNullOrEmpty(models.RoleId.ToString()))
@@ -236,19 +256,20 @@ public class UserRepository : IUserRepository
         item.UpdatedAt = DateTime.UtcNow;
 
         _db.Entry(item).State = EntityState.Modified;
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
 
         models = UsersViewModelsMapping(item);
 
         return models;
     }
 
-    public UsersViewModels? PatchUser(string id, UsersViewModels models)
+    public async Task<UsersViewModels?> PatchUser(string id, UsersViewModels models)
     {
-        var item = _db.TblUsers
+        var item = await _db.TblUsers
             .AsNoTracking()
-            .FirstOrDefault(x => x.UserId.ToString() == id
+            .FirstOrDefaultAsync(x => x.UserId.ToString() == id
             && x.IsDelete == false);
+
         if (item is null) { return null; }
 
         if (!string.IsNullOrEmpty(models.RoleId.ToString()))
@@ -278,22 +299,22 @@ public class UserRepository : IUserRepository
 
         if (!string.IsNullOrEmpty(models.IsInformationCompleted.ToString()))
 
-            item.Version += 1;
+        item.Version += 1;
         item.UpdatedAt = DateTime.UtcNow;
 
         _db.Entry(item).State = EntityState.Modified;
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
 
         models = UsersViewModelsMapping(item);
 
         return models;
     }
 
-    public bool? DeleteUser(string id)
+    public async Task<bool?> DeleteUser(string id)
     {
-        var item = _db.TblUsers
+        var item = await _db.TblUsers
             .AsNoTracking()
-            .FirstOrDefault(x => x.UserId.ToString() == id
+            .FirstOrDefaultAsync(x => x.UserId.ToString() == id
             && x.IsDelete == false);
         if (item is null)
         {
@@ -305,7 +326,7 @@ public class UserRepository : IUserRepository
         item.IsDelete = true;
 
         _db.Entry(item).State = EntityState.Modified;
-        var result = _db.SaveChanges();
+        var result = await _db.SaveChangesAsync();
 
         return result > 0;
     }
