@@ -2,18 +2,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using online_job_finder.DataBase.Models;
 using online_job_finder.Domain.Services.CompanyProfileServices;
-using online_job_finder.Domain.Services.JobCategoryServices;
-using online_job_finder.Domain.Services.JobServices;
-using online_job_finder.Domain.Services.LocationServices;
-using online_job_finder.Domain.Services.RoleServices;
-using online_job_finder.Domain.Services.SkillServices;
-using online_job_finder.Domain.Services.UsersServices;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 
 //builder.Services.AddDbContext<AppDbContext>(options =>
@@ -41,7 +33,6 @@ if (databaseType == "MySQL")
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -63,38 +54,39 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-builder.Services.AddSwaggerGen(option =>
-{
-    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n" +
-                      "Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\n" +
-                      "Example: 'Bearer 12345abcdef'",
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
-    });
+#region Test Code
+//builder.Services.AddSwaggerGen(option =>
+//{
+//    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+//    {
+//        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n" +
+//                      "Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\n" +
+//                      "Example: 'Bearer 12345abcdef'",
+//        Name = "Authorization",
+//        In = ParameterLocation.Header,
+//        Type = SecuritySchemeType.ApiKey,
+//        Scheme = "Bearer"
+//    });
 
-    option.AddSecurityRequirement(new OpenApiSecurityRequirement()
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                },
-                Scheme = "oauth2",
-                Name = "Bearer",
-                In = ParameterLocation.Header,
-            },
-            new List<string>()
-        }
-    });
-});
-
+//    option.AddSecurityRequirement(new OpenApiSecurityRequirement()
+//    {
+//        {
+//            new OpenApiSecurityScheme
+//            {
+//                Reference = new OpenApiReference
+//                {
+//                    Type = ReferenceType.SecurityScheme,
+//                    Id = "Bearer"
+//                },
+//                Scheme = "oauth2",
+//                Name = "Bearer",
+//                In = ParameterLocation.Header,
+//            },
+//            new List<string>()
+//        }
+//    });
+//});
+#endregion
 
 //builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -117,6 +109,7 @@ builder.Services.AddHttpContextAccessor();
 
 // I add some folders in here
 builder.Services.AddScoped<JobRepository>();
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

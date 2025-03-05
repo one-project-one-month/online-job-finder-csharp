@@ -1,84 +1,75 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using online_job_finder.Domain.Services.SkillServices;
-using online_job_finder.Domain.ViewModels;
+﻿namespace online_job_finder.Api.Controllers.Endpoints;
 
-namespace online_job_finder.Api.Controllers.Endpoints
+
+[Authorize(Roles = "Admins")]
+[Route("api/admins/[controller]")]
+[ApiController]
+public class skillsController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class SkillsController : ControllerBase
+    private readonly ISkillRepository _skillRepository;
+
+    public skillsController()
     {
-        private readonly ISkillRepository _skillRepository;
+        _skillRepository = new SkillRepository();
+    }
 
-        public SkillsController()
+    [HttpGet("getskills")]
+    public async Task<IActionResult> GetSkills()
+    {
+        var items = await _skillRepository.GetSkills();
+
+        return Ok(items);
+    }
+
+    [HttpGet("getskill")]
+    public async Task<IActionResult> GetSkill(string id)
+    {
+        var items = await _skillRepository.GetSkill(id);
+
+        return Ok(items);
+    }
+
+    [HttpPost("createskill")]
+    public async Task<IActionResult> CreateSkill(SkillsViewModels Skill)
+    {
+        var items = await _skillRepository.CreateSkill(Skill);
+
+        return Ok(items);
+    }
+
+    [HttpPut("updateskill")]
+    public async Task<IActionResult> UpdateSkill(string id, SkillsViewModels Skill)
+    {
+        var item = await _skillRepository.UpdateSkill(id, Skill);
+
+        if (item is null)
         {
-            _skillRepository = new SkillRepository();
+            return BadRequest("Don`t have data");
         }
+        return Ok(item);
+    }
 
-        [HttpGet("GetSkills")]
-        public IActionResult GetSkills()
+    [HttpPatch("patchskill")]
+    public async Task<IActionResult> PatchSkill(string id, SkillsViewModels Skill)
+    {
+        var item = await _skillRepository.PatchSkill(id, Skill);
+
+        if (item is null)
         {
-            var items = _skillRepository.GetSkills();
-
-            return Ok(items);
+            return BadRequest("Don`t have data");
         }
+        return Ok(item);
+    }
 
-        [HttpGet("GetSkill/{id}")]
-        public IActionResult GetSkill(string id)
+    [HttpDelete("deleteskill")]
+    public async Task<IActionResult> DeleteSkill(string id)
+    {
+        var item = await _skillRepository.DeleteSkill(id);
+
+        if (item is null)
         {
-            var items = _skillRepository.GetSkill(id);
-
-            return Ok(items);
+            return BadRequest("Don`t have data");
         }
-
-        [HttpPost("CreateSkill")]
-        public IActionResult CreateSkill(SkillsViewModels Skill)
-        {
-            var items = _skillRepository.CreateSkill(Skill);
-
-            return Ok(items);
-        }
-
-        [HttpPut("UpdateSkill/{id}")]
-        public IActionResult UpdateSkill(string id, SkillsViewModels Skill)
-        {
-
-            var item = _skillRepository.UpdateSkill(id, Skill);
-
-            // need to write reponse & request
-
-            if (item is null)
-            {
-                return BadRequest("Don`t have data");
-            }
-            return Ok(item);
-        }
-
-        [HttpPatch("PatchSkill/{id}")]
-        public IActionResult PatchSkill(string id, SkillsViewModels Skill)
-        {
-
-            var item = _skillRepository.PatchSkill(id, Skill);
-
-            // need to write reponse & request
-
-            if (item is null)
-            {
-                return BadRequest("Don`t have data");
-            }
-            return Ok(item);
-        }
-
-        [HttpDelete("DeleteSkill/{id}")]
-        public IActionResult DeleteSkill(string id)
-        {
-            var item = _skillRepository.DeleteSkill(id);
-
-            if (item is null)
-            {
-                return BadRequest("Don`t have data");
-            }
-            return Ok("Deleting success");
-        }
+        return Ok("Deleting success");
     }
 }

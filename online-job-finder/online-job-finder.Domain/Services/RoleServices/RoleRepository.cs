@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using online_job_finder.DataBase.Models;
-using online_job_finder.Domain.ViewModels;
-
-namespace online_job_finder.Domain.Services.RoleServices;
+﻿namespace online_job_finder.Domain.Services.RoleServices;
 
 public class RoleRepository : IRoleRepository
 {
@@ -13,38 +9,37 @@ public class RoleRepository : IRoleRepository
         _db = new AppDbContext();
     }
 
-    // BLL
-    public RolesViewModels CreateRole(RolesViewModels model)
+    public async Task<RolesViewModels> CreateRole(RolesViewModels model)
     {
         model.Version += 1;
         model.UpdatedAt = null;
 
         TblRole roles = RolesMapping(model);
 
-        _db.TblRoles.Add(roles);
-        _db.SaveChanges();
+        await _db.TblRoles.AddAsync(roles);
+        await _db.SaveChangesAsync();
 
         return model;
     }
 
-    public List<RolesViewModels> GetRoles()
+    public async Task<List<RolesViewModels>> GetRoles()
     {
-        var model = _db.TblRoles
+        var model = await _db.TblRoles
             .AsNoTracking()
             .Where(x => x.IsDelete == false)
             .OrderBy(x => x.Version)
-            .ToList();
+            .ToListAsync();
 
         var rolesViewModels = model.Select(RolesViewModelsMapping).ToList();
 
         return rolesViewModels;
     }
 
-    public RolesViewModels? GetRole(string id)
+    public async Task<RolesViewModels?> GetRole(string id)
     {
-        var model = _db.TblRoles
+        var model = await _db.TblRoles
             .AsNoTracking()
-            .FirstOrDefault(x => x.RoleId.ToString() == id
+            .FirstOrDefaultAsync(x => x.RoleId.ToString() == id
             && x.IsDelete == false);
 
         if (model is null) { return null; }
@@ -54,11 +49,11 @@ public class RoleRepository : IRoleRepository
         return mappingModel;
     }
 
-    public RolesViewModels? UpdateRole(string id, RolesViewModels models)
+    public async Task<RolesViewModels?> UpdateRole(string id, RolesViewModels models)
     {
-        var item = _db.TblRoles
+        var item = await _db.TblRoles
             .AsNoTracking()
-            .FirstOrDefault(x => x.RoleId.ToString() == id
+            .FirstOrDefaultAsync(x => x.RoleId.ToString() == id
             && x.IsDelete == false);
         if (item is null) { return null; }
 
@@ -71,18 +66,18 @@ public class RoleRepository : IRoleRepository
         item.UpdatedAt = DateTime.UtcNow;
 
         _db.Entry(item).State = EntityState.Modified;
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
 
         models = RolesViewModelsMapping(item);
 
         return models;
     }
 
-    public RolesViewModels? PatchRole(string id, RolesViewModels models)
+    public async Task<RolesViewModels?> PatchRole(string id, RolesViewModels models)
     {
-        var item = _db.TblRoles
+        var item = await _db.TblRoles
             .AsNoTracking()
-            .FirstOrDefault(x => x.RoleId.ToString() == id
+            .FirstOrDefaultAsync(x => x.RoleId.ToString() == id
             && x.IsDelete == false);
         if (item is null) { return null; }
 
@@ -95,17 +90,17 @@ public class RoleRepository : IRoleRepository
         item.UpdatedAt = DateTime.UtcNow;
 
         _db.Entry(item).State = EntityState.Modified;
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
 
         models = RolesViewModelsMapping(item);
         return models;
     }
 
-    public bool? DeleteRole(string id)
+    public async Task<bool?> DeleteRole(string id)
     {
-        var item = _db.TblRoles
+        var item = await _db.TblRoles
             .AsNoTracking()
-            .FirstOrDefault(x => x.RoleId.ToString() == id
+            .FirstOrDefaultAsync(x => x.RoleId.ToString() == id
             && x.IsDelete == false);
         if (item is null)
         {
@@ -117,11 +112,10 @@ public class RoleRepository : IRoleRepository
         item.IsDelete = true;
 
         _db.Entry(item).State = EntityState.Modified;
-        var result = _db.SaveChanges();
+        var result = await _db.SaveChangesAsync();
 
         return result > 0;
     }
-
 
     //Can use for every roles
     private static TblRole RolesMapping(RolesViewModels roles)
