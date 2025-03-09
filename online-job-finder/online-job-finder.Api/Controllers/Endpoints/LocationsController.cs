@@ -1,6 +1,5 @@
 ﻿namespace online_job_finder.Api.Controllers.Endpoints;
 
-
 [Authorize(Roles = "Admins")]
 [Route("api/admins/[controller]")]
 [ApiController]
