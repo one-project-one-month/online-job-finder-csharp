@@ -1,6 +1,5 @@
 ﻿namespace online_job_finder.Api.Controllers.Endpoints;
 
-
 [Authorize(Roles = "Admins")]
 [Route("api/admins/[controller]")]
 [ApiController]
@@ -67,7 +66,7 @@ public class jobcategoriesController : ControllerBase
     public async Task<IActionResult> DeleteJobCategory(string id)
     {
         var item = await _jobCategoryRepository.DeleteJobCategory(id);
-
+        
         if (item is null)
         {
             return BadRequest("Don`t have data");
