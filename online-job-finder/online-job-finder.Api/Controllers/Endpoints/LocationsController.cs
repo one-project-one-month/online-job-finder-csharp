@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using online_job_finder.Domain.Services.LocationServices;
 using online_job_finder.Domain.ViewModels;
 
@@ -71,6 +72,79 @@ namespace online_job_finder.Api.Controllers.Endpoints
 
         [HttpDelete("DeleteLocation/{id}")]
         public IActionResult DeleteLocation(string id)
+        {
+            var item = _locationRepository.DeleteLocation(id);
+
+            if (item is null)
+            {
+                return BadRequest("Don`t have data");
+            }
+            return Ok("Deleting success");
+        }
+
+        
+        [Authorize(Roles = "Admins")]
+        [HttpGet("/admin/locations/GetLocations")]
+        public IActionResult GetForAdminsLocations()
+        {
+            var items = _locationRepository.GetLocations();
+
+            return Ok(items);
+        }
+
+        [Authorize(Roles = "Admins")]
+        [HttpGet("/admin/locations/GetLocation/{id}")]
+        public IActionResult GetForAdminsLocation(string id)
+        {
+            var items = _locationRepository.GetLocation(id);
+
+            return Ok(items);
+        }
+
+        [Authorize(Roles = "Admins")]
+        [HttpPost("/admin/locations/CreateLocation")]
+        public IActionResult CreateForAdminsLocation(LocationViewModels viewModels)
+        {
+            var items = _locationRepository.CreateLocation(viewModels);
+
+            return Ok(items);
+        }
+
+        [Authorize(Roles = "Admins")]
+        [HttpPut("/admin/locations/UpdateLocation/{id}")]
+        public IActionResult UpdateForAdminsLocation(string id, LocationViewModels viewModels)
+        {
+
+            var item = _locationRepository.UpdateLocation(id, viewModels);
+
+            // need to write reponse & request
+
+            if (item is null)
+            {
+                return BadRequest("Don`t have data");
+            }
+            return Ok(item);
+        }
+
+        [Authorize(Roles = "Admins")]
+        [HttpPatch("/admin/locations/PatchLocation/{id}")]
+        public IActionResult PatchForAdminsLocation(string id, LocationViewModels viewModels)
+        {
+
+            var item = _locationRepository.PatchLocation(id, viewModels);
+
+            // need to write reponse & request
+
+            if (item is null)
+            {
+                return BadRequest("Don`t have data");
+            }
+            return Ok(item);
+        }
+
+        [Authorize(Roles = "Admins")]
+        [HttpDelete("/admin/locations/DeleteLocation/{id}")]
+        public IActionResult DeleteForAdminsLocation(string id)
         {
             var item = _locationRepository.DeleteLocation(id);
 
