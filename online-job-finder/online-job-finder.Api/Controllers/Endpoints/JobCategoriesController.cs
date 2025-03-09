@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using online_job_finder.Domain.Services.JobCategoryServices;
 using online_job_finder.Domain.ViewModels;
 
@@ -80,5 +81,78 @@ namespace online_job_finder.Api.Controllers.Endpoints
             }
             return Ok("Deleting success");
         }
+
+        [Authorize(Roles = "Admins")]
+        [HttpGet("/admin/job-categories/GetJobCategories")]
+        public IActionResult GetForAdminsJobCategories()
+        {
+            var items = _jobCategoryRepository.GetJobCategories();
+
+            return Ok(items);
+        }
+
+        [Authorize(Roles = "Admins")]
+        [HttpGet("/admin/job-categories/GetJobCategory/{id}")]
+        public IActionResult GetForAdminsJobCategory(string id)
+        {
+            var items = _jobCategoryRepository.GetJobCategories();
+
+            return Ok(items);
+        }
+
+        [Authorize(Roles = "Admins")]
+        [HttpPost("/admin/job-categories/CreateJobCategory")]
+        public IActionResult CreateForAdminsJobCategory(JobCategoryViewModels models)
+        {
+            var items = _jobCategoryRepository.CreateJobCategory(models);
+
+            return Ok(items);
+        }
+
+        [Authorize(Roles = "Admins")]
+        [HttpPut("/admin/job-categories/UpdateJobCategory/{id}")]
+        public IActionResult UpdateForAdminsJobCategory(string id, JobCategoryViewModels models)
+        {
+
+            var item = _jobCategoryRepository.UpdateJobCategory(id, models);
+
+            // need to write reponse & request
+
+            if (item is null)
+            {
+                return BadRequest("Don`t have data");
+            }
+            return Ok(item);
+        }
+
+        [Authorize(Roles = "Admins")]
+        [HttpPatch("/admin/job-categories/PatchJobCategory/{id}")]
+        public IActionResult PatchForAdminsJobCategory(string id, JobCategoryViewModels models)
+        {
+
+            var item = _jobCategoryRepository.PatchJobCategory(id, models);
+
+            // need to write reponse & request
+
+            if (item is null)
+            {
+                return BadRequest("Don`t have data");
+            }
+            return Ok(item);
+        }
+
+        [Authorize(Roles = "Admins")]
+        [HttpDelete("/admin/job-categories/DeleteJobCategory/{id}")]
+        public IActionResult DeleteForAdminsJobCategory(string id)
+        {
+            var item = _jobCategoryRepository.DeleteJobCategory(id);
+
+            if (item is null)
+            {
+                return BadRequest("Don`t have data");
+            }
+            return Ok("Deleting success");
+        }
+
     }
 }

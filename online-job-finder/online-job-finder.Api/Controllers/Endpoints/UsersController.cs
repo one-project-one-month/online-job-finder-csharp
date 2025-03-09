@@ -50,25 +50,25 @@ namespace online_job_finder.Api.Controllers.Endpoints
             return Ok(result);
         }
 
-        [Authorize(Roles = "Students")]
-        [HttpGet("Student-Test")]
+        [Authorize(Roles = "Applicants")]
+        [HttpGet("Applicants-Test")]
         public IActionResult AuthenticatedOnlyEndpoint()
         {
-            return Ok("You are authenticated as student.");
+            return Ok("You are authenticated as Applicants.");
         }
 
-        [Authorize(Roles = "Admins,Instructors,Students")]
+        [Authorize(Roles = "Admins,Company,Applicants")]
         [HttpGet("All-Only-Test")]
         public IActionResult AdminOnlyEndpoint()
         {
             return Ok("You are authenticated as all.");
         }
 
-        [Authorize(Roles = "Instructors")]
-        [HttpGet("Instructors-Only-Test")]
-        public IActionResult InstructorsOnlyEndpoint()
+        [Authorize(Roles = "Company")]
+        [HttpGet("Company-Only-Test")]
+        public IActionResult CompanyOnlyEndpoint()
         {
-            return Ok("You are authenticated as Instructors.");
+            return Ok("You are authenticated as Company.");
         }
 
         //[HttpPost("/api/auth/password/Change")]
