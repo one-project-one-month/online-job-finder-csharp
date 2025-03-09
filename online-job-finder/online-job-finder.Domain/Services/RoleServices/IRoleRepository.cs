@@ -1,18 +1,16 @@
-﻿using online_job_finder.Domain.ViewModels;
-
-namespace online_job_finder.Domain.Services.RoleServices;
+﻿namespace online_job_finder.Domain.Services.RoleServices;
 
 public interface IRoleRepository
 {
-    RolesViewModels CreateRole(RolesViewModels roles);
+    Task<RolesViewModels> CreateRole(RolesViewModels roles);
 
-    List<RolesViewModels> GetRoles();
+    Task<List<RolesViewModels>> GetRoles();
 
-    RolesViewModels? GetRole(string id);
+    Task<RolesViewModels?> GetRole(string id);
 
-    RolesViewModels? UpdateRole(string id, RolesViewModels roles);
+    Task<RolesViewModels?> UpdateRole(string id, RolesViewModels roles);
 
-    RolesViewModels? PatchRole(string id, RolesViewModels roles);
+    Task<RolesViewModels?> PatchRole(string id, RolesViewModels roles);
 
-    bool? DeleteRole(string id);
+    Task<bool?> DeleteRole(string id);
 }

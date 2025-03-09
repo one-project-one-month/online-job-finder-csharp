@@ -1,18 +1,17 @@
-﻿using online_job_finder.Domain.ViewModels;
-
-namespace online_job_finder.Domain.Services.UsersServices;
+﻿namespace online_job_finder.Domain.Services.UsersServices;
 
 public interface IUserRepository
 {
     Task<UsersViewModels?> RegisterAsync(UsersViewModels request);
     Task<TokenResponse?> LoginAsync(LoginRequest request);
     Task<TokenResponse?> RefreshTokenAsync(RefreshTokenRequest refreshToken);
+    Task<UsersViewModels?> ChangePassword(string id, ChangePasswordRequest request);
 
     //CRUD
-    List<UsersViewModels> GetUsers();
-    UsersViewModels? GetUser(string id);
+    Task<List<UsersViewModels>> GetUsers();
+    Task<UsersViewModels?> GetUser(string id);
     //Task CreateUser(object request);
-    UsersViewModels? UpdateUser(string id, UsersViewModels request);
-    UsersViewModels? PatchUser(string id, UsersViewModels request);
-    bool? DeleteUser(string id);
+    Task<UsersViewModels?> UpdateUser(string id, UsersViewModels request);
+    Task<UsersViewModels?> PatchUser(string id, UsersViewModels request);
+    Task<bool?> DeleteUser(string id);
 }
