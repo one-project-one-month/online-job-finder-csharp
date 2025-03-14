@@ -1,11 +1,10 @@
-﻿namespace online_job_finder.DataBase.Models;
+﻿namespace online_job_finder.Domain.ViewModels;
 
-public partial class TblReview
+public class ReviewViewModels
 {
-    public Guid ReviewsId { get; set; }
-
+    [JsonIgnore]
     public Guid CompanyProfilesId { get; set; }
-
+    [JsonIgnore]
     public Guid ApplicantProfilesId { get; set; }
 
     public decimal Ratings { get; set; }
@@ -19,8 +18,4 @@ public partial class TblReview
     public DateTime? UpdatedAt { get; set; }
 
     public bool IsDelete { get; set; }
-
-    public virtual TblApplicantProfile ApplicantProfiles { get; set; } = null!;
-
-    public virtual TblCompanyProfile CompanyProfiles { get; set; } = null!;
 }
