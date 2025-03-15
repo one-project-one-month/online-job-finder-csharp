@@ -1,0 +1,11 @@
+﻿global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Mvc;
+global using online_job_finder.DataBase.Models;
+global using online_job_finder.Domain.ViewModels;
+global using online_job_finder.Domain.Services.SkillServices;
+global using online_job_finder.Domain.Services.UsersServices;
+global using online_job_finder.Domain.Services.RoleServices;
+global using online_job_finder.Domain.Services.LocationServices;
+global using online_job_finder.Domain.Services.JobServices;
+global using online_job_finder.Domain.Services.JobCategoryServices;
+global using System.ComponentModel.DataAnnotations;
