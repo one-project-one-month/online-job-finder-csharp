@@ -1,0 +1,21 @@
+﻿using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace online_job_finder.Domain.ViewModels;
+
+public class ResumeViewModel
+{
+    public Guid UserId { get; set; }
+    public IFormFile resumeFile { get; set; } = null!;
+
+    public string FilePath { get; set; } = null!;
+    public int Version { get; set; }
+
+    public DateTime CreatedAt { get; set; }
+
+    public DateTime? UpdatedAt { get; set; }
+}
