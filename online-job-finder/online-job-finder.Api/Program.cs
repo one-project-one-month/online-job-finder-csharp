@@ -1,10 +1,3 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using online_job_finder.Domain.Services.CompanyProfileServices;
-using System.Text;
-
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -88,19 +81,25 @@ builder.Services.AddAuthentication(options =>
 //});
 #endregion
 
-//builder.Services.AddScoped<UserRepository>();
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-//builder.Services.AddScoped<RoleRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
-//builder.Services.AddScoped<SkillRepository>();
 builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 
-//builder.Services.AddScoped<LocationRepository>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 
-//builder.Services.AddScoped<JobCategoryRepository>();
+builder.Services.AddScoped<IApplicant_EducationsRepository, Applicant_EducationsRepository>();
+
+builder.Services.AddScoped<IApplicant_ExperiencesRepository, Applicant_ExperiencesRepository>();
+
+builder.Services.AddScoped<IReviewsRepository, ReviewsRepository>();
+
+builder.Services.AddScoped<IApplicant_SkillsRepository, Applicant_SkillsRepository>();
+
+builder.Services.AddScoped<IApplicant_JobCategoryRepository, Applicant_JobCategoryRepository>();
+
 builder.Services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
 
 builder.Services.AddScoped<ICompanyProfileServices, CompanyProfileServices>();
@@ -117,11 +116,13 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
