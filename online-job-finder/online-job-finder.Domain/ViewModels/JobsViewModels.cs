@@ -40,4 +40,19 @@ namespace online_job_finder.Domain.ViewModels
 
        
     }
+    public class JobSearchParameters
+    {
+        public string[] Q { get; set; }
+        public string[] Location { get; set; }
+        public string[] Category { get; set; }
+        public string[] Type { get; set; }
+
+        public JobSearchParameters(string[] q, string[] location, string[] category, string[] type)
+        {
+            Q = q;
+            Location = location;
+            Category = category;
+            Type = type;
+        }
+    }
 }

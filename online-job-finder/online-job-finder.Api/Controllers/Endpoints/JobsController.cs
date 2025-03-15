@@ -9,14 +9,6 @@ namespace online_job_finder.Api.Controllers.Endpoints
     [ApiController]
     public class JobsController : Controller
     {
-        /*
-          * 4.Job 
-             - /jobs               
-             - /jobs/{id} 
-             - jobs CRUD => CRD [completed],UpdateJob and PatchJob [in-progress]
-             - /jobs/{id}/apply(not started)
-             - /jobs/{id}/save (on-hold)
-        */
         private readonly JobRepository _jobRepo;
         private readonly ILogger<JobsController> _logger;
         public JobsController(JobRepository jobRepo, ILogger<JobsController> logger)
@@ -25,7 +17,8 @@ namespace online_job_finder.Api.Controllers.Endpoints
             _logger = logger;
         }
 
-        [HttpGet]
+        [Authorize(Roles = "Admins,Company,Applicants,Recruiters")]
+        [HttpGet("getalljob")]
         public IActionResult GetJobs()
         {
             try
@@ -43,21 +36,26 @@ namespace online_job_finder.Api.Controllers.Endpoints
                 });
             }
         }
-        [HttpGet("GetJob/{id}")]
+
+        [Authorize(Roles = "Admins,Company,Applicants,Recruiters")]
+        [HttpGet("getjob/{id}")]
         public IActionResult GetJob(string id)
-        {           
-                var job = _jobRepo.GetJobById(id);
-                return Ok(job);           
+        {
+            var job = _jobRepo.GetJobById(id);
+            return Ok(job);
         }
-        [HttpPost("CreateJob")]
+
+        [Authorize(Roles = "Recruiters")]
+        [HttpPost("createjob")]        
         public IActionResult CreateJob(JobsViewModels models)
         {
             var items = _jobRepo.CreateJob(models);
 
             return Ok(items);
         }
-        //Still in progress....
-        [HttpPut("UpdateJob/{id}")]
+        
+        [Authorize(Roles = "Recruiters")]
+        [HttpPut("updatejob/{id}")]
         public IActionResult UpdateJob(string id, JobsViewModels models)
         {
 
@@ -68,8 +66,9 @@ namespace online_job_finder.Api.Controllers.Endpoints
             }
             return Ok(item);
         }
-        //Still in progress....
-        [HttpPatch("PatchJob/{id}")]
+        
+        [Authorize(Roles = "Recruiters")]
+        [HttpPatch("patchjob/{id}")]
         public IActionResult PatchJob(string id, JobsViewModels models)
         {
 
@@ -80,8 +79,9 @@ namespace online_job_finder.Api.Controllers.Endpoints
             }
             return Ok(item);
         }
-
-        [HttpDelete("DeleteJob/{id}")]
+        
+        [Authorize(Roles = "Recruiters")]
+        [HttpDelete("deletejob/{id}")]
         public IActionResult DeleteJob(string id)
         {
             var item = _jobRepo.DeleteJob(id);
@@ -92,7 +92,46 @@ namespace online_job_finder.Api.Controllers.Endpoints
             }
             return Ok("Deleting success");
         }
+        
+        [HttpGet("search")]
+        public IActionResult SearchJob([FromQuery] string[] q, [FromQuery] string[] location, [FromQuery] string[] category, [FromQuery] string[] type)
+        {
+            System.Console.WriteLine($"Query: {string.Join(", ", q)}");
+            System.Console.WriteLine($"Location: {string.Join(", ", location)}");
+            System.Console.WriteLine($"Category: {string.Join(", ", category)}");
+            System.Console.WriteLine($"Type: {string.Join(", ", type)}");
+
+            var requestJob = new JobSearchParameters(q, location, category, type);
+
+
+            var jobs = _jobRepo.GetJobsAsync(requestJob);
+
+            return Ok(jobs);
+
+        }
+        
+        [Authorize(Roles = "Applicants")]
+        [HttpPost("applyjob")]
+        public IActionResult applyJob(ApplyJobViewModels models)
+        {
+            var items = _jobRepo.applyJob(models);
+
+            if(items is null)
+            {
+                return BadRequest("Already Applied");
+            }
+            return Ok("Success!");
+        }
+        
+        [Authorize(Roles = "Applicants")]
+        [HttpPost("savejob")]
+        public IActionResult saveyJob(SavedJobViewModels models)
+        {
+            var items = _jobRepo.saveJob(models);
+
+            return Ok("Success!");
+        }
 
     }
-    
+
 }
