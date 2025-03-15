@@ -1,3 +1,5 @@
+using online_job_finder.Domain.Services.CompanyServices;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -103,6 +105,9 @@ builder.Services.AddScoped<IApplicant_JobCategoryRepository, Applicant_JobCatego
 builder.Services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
 
 builder.Services.AddScoped<ICompanyProfileServices, CompanyProfileServices>();
+
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+
 builder.Services.AddHttpContextAccessor();
 
 
