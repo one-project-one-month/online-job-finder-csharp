@@ -1,210 +1,210 @@
-﻿//namespace online_job_finder.Domain.Services.ReviewsServices;
+﻿namespace online_job_finder.Domain.Services.ReviewsServices;
 
-//public class ReviewsRepository
-//{
-//    private readonly AppDbContext _db;
+public class ReviewsRepository : IReviewsRepository
+{
+    private readonly AppDbContext _db;
 
-//    public ReviewsRepository()
-//    {
-//        _db = new AppDbContext();
-//    }
+    public ReviewsRepository()
+    {
+        _db = new AppDbContext();
+    }
 
-//    public async Task<EducationsViewModels> CreateReview(EducationsViewModels model)
-//    {
-//        model.Version += 1;
-//        model.UpdatedAt = null;
+    public async Task<ReviewViewModels> CreateReview(ReviewViewModels model, string userid)
+    {
+        var usercheck = await _db.TblApplicantProfiles
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.IsDelete == false
+            && x.UserId.ToString() == userid);
 
-//        TblApplicantEducation items = Applicant_EducationsMapping(model);
+        if (usercheck == null) return null;
 
-//        await _db.TblApplicantEducations.AddAsync(items);
-//        await _db.SaveChangesAsync();
+        model.ApplicantProfilesId = usercheck.ApplicantProfilesId;
+        model.Version += 1;
+        model.UpdatedAt = null;
 
-//        return model;
-//    }
+        TblReview items = ReviewsMapping(model);
 
-//    public async Task<List<EducationsViewModels>> GetReviews()
-//    {
-//        var model = await _db.TblApplicantEducations
-//            .AsNoTracking()
-//            .Where(x => x.IsDelete == false)
-//            .OrderBy(x => x.Version)
-//            .ToListAsync();
+        await _db.TblReviews.AddAsync(items);
+        await _db.SaveChangesAsync();
 
-//        var viewModels = model.Select(Applicant_EducationsViewModelsMapping).ToList();
+        return model;
+    }
 
-//        return viewModels;
-//    }
+    public async Task<List<ReviewViewModels>> GetReviews(string userid)
+    {
+        var usercheck = await _db.TblApplicantProfiles
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.IsDelete == false
+            && x.UserId.ToString() == userid);
 
-//    public async Task<EducationsViewModels?> GetReview(string id)
-//    {
-//        var model = await _db.TblApplicantEducations
-//            .AsNoTracking()
-//            .FirstOrDefaultAsync(x => x.ApplicantEducationsId.ToString() == id
-//            && x.IsDelete == false);
+        if (usercheck == null) return null;
 
-//        if (model is null) { return null; }
+        var model = await _db.TblReviews
+            .AsNoTracking()
+            .Where(x => x.IsDelete == false 
+            && x.ApplicantProfilesId == usercheck.ApplicantProfilesId)
+            .OrderBy(x => x.Version)
+            .ToListAsync();
 
-//        var viewModel = Applicant_EducationsViewModelsMapping(model);
+        var viewModels = model.Select(ReviewsViewModelsMapping).ToList();
 
-//        return viewModel;
-//    }
+        return viewModels;
+    }
 
-//    public async Task<EducationsViewModels?> UpdateReview(string id, EducationsViewModels models)
-//    {
-//        var item = await _db.TblApplicantEducations
-//            .AsNoTracking()
-//            .FirstOrDefaultAsync(x => x.ApplicantEducationsId.ToString() == id
-//            && x.IsDelete == false);
+    public async Task<ReviewViewModels?> GetReview(string id, string userid)
+    {
+        var usercheck = await _db.TblApplicantProfiles
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.IsDelete == false
+            && x.UserId.ToString() == userid);
 
-//        if (item is null) { return null; }
+        if (usercheck == null) return null;
 
-//        if (!string.IsNullOrEmpty(models.School_Name))
-//        {
-//            item.SchoolName = models.School_Name;
-//        }
-//        if (!string.IsNullOrEmpty(models.Degree))
-//        {
-//            item.Degree = models.Degree;
-//        }
-//        if (!string.IsNullOrEmpty(models.Field_Of_Study))
-//        {
-//            item.FieldOfStudy = models.Field_Of_Study;
-//        }
-//        if (!string.IsNullOrEmpty(models.Start_Date.ToString()))
-//        {
-//            item.StartDate = models.Start_Date;
-//        }
-//        if (!string.IsNullOrEmpty(models.End_Date.ToString()))
-//        {
-//            item.EndDate = models.End_Date;
-//        }
-//        if (!string.IsNullOrEmpty(models.Still_Attending.ToString()))
-//        {
-//            item.StillAttending = models.Still_Attending;
-//        }
-//        if (!string.IsNullOrEmpty(models.Description))
-//        {
-//            item.Description = models.Description;
-//        }
+        var model = await _db.TblReviews
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.ReviewsId.ToString() == id
+            && x.IsDelete == false
+            && x.ApplicantProfilesId == usercheck.ApplicantProfilesId);
 
-//        item.Version += 1;
-//        item.UpdatedAt = DateTime.UtcNow;
+        if (model is null) { return null; }
 
-//        _db.Entry(item).State = EntityState.Modified;
-//        await _db.SaveChangesAsync();
+        var viewModel = ReviewsViewModelsMapping(model);
 
-//        models = Applicant_EducationsViewModelsMapping(item);
+        return viewModel;
+    }
 
-//        return models;
-//    }
+    public async Task<ReviewViewModels?> UpdateReview(string id, ReviewViewModels models, string userid)
+    {
+        var usercheck = await _db.TblApplicantProfiles
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.IsDelete == false
+            && x.UserId.ToString() == userid);
 
-//    public async Task<EducationsViewModels?> PatchReview(string id, EducationsViewModels models)
-//    {
-//        var item = await _db.TblApplicantEducations
-//            .AsNoTracking()
-//            .FirstOrDefaultAsync(x => x.ApplicantEducationsId.ToString() == id
-//            && x.IsDelete == false);
+        if (usercheck == null) return null;
 
-//        if (item is null) { return null; }
+        var item = await _db.TblReviews
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.ReviewsId.ToString() == id
+            && x.IsDelete == false 
+            && x.ApplicantProfilesId == usercheck.ApplicantProfilesId);
 
-//        if (!string.IsNullOrEmpty(models.School_Name))
-//        {
-//            item.SchoolName = models.School_Name;
-//        }
-//        if (!string.IsNullOrEmpty(models.Degree))
-//        {
-//            item.Degree = models.Degree;
-//        }
-//        if (!string.IsNullOrEmpty(models.Field_Of_Study))
-//        {
-//            item.FieldOfStudy = models.Field_Of_Study;
-//        }
-//        if (!string.IsNullOrEmpty(models.Start_Date.ToString()))
-//        {
-//            item.StartDate = models.Start_Date;
-//        }
-//        if (!string.IsNullOrEmpty(models.End_Date.ToString()))
-//        {
-//            item.EndDate = models.End_Date;
-//        }
-//        if (!string.IsNullOrEmpty(models.Still_Attending.ToString()))
-//        {
-//            item.StillAttending = models.Still_Attending;
-//        }
-//        if (!string.IsNullOrEmpty(models.Description))
-//        {
-//            item.Description = models.Description;
-//        }
+        if (item is null) { return null; }
 
-//        item.Version += 1;
-//        item.UpdatedAt = DateTime.UtcNow;
+        
+        item.Ratings = models.Ratings;
+        
+        if (!string.IsNullOrEmpty(models.Comments))
+        {
+            item.Comments = models.Comments;
+        }
 
-//        _db.Entry(item).State = EntityState.Modified;
-//        await _db.SaveChangesAsync();
+        item.Version += 1;
+        item.UpdatedAt = DateTime.UtcNow;
 
-//        models = Applicant_EducationsViewModelsMapping(item);
+        _db.Entry(item).State = EntityState.Modified;
+        await _db.SaveChangesAsync();
 
-//        return models;
-//    }
+        models = ReviewsViewModelsMapping(item);
 
-//    public async Task<bool?> DeleteReview(string id)
-//    {
-//        var item = await _db.TblApplicantEducations
-//            .AsNoTracking()
-//            .FirstOrDefaultAsync(x => x.ApplicantEducationsId.ToString() == id
-//            && x.IsDelete == false);
-//        if (item is null)
-//        {
-//            return null;
-//        }
+        return models;
+    }
 
-//        item.Version += 1;
-//        item.UpdatedAt = DateTime.UtcNow;
-//        item.IsDelete = true;
+    public async Task<ReviewViewModels?> PatchReview(string id, ReviewViewModels models, string userid)
+    {
+        var usercheck = await _db.TblApplicantProfiles
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.IsDelete == false
+            && x.UserId.ToString() == userid);
 
-//        _db.Entry(item).State = EntityState.Modified;
-//        var result = await _db.SaveChangesAsync();
+        if (usercheck == null) return null;
 
-//        return result > 0;
-//    }
+        var item = await _db.TblReviews
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.ReviewsId.ToString() == id
+            && x.IsDelete == false 
+            && x.ApplicantProfilesId == usercheck.ApplicantProfilesId);
 
-//    private static TblApplicantEducation ReviewsMapping(EducationsViewModels models)
-//    {
-//        return new TblApplicantEducation
-//        {
-//            ApplicantEducationsId = Guid.NewGuid(),
-//            ApplicantProfilesId = models.ApplicantProfilesId,
-//            SchoolName = models.School_Name,
-//            Degree = models.Degree,
-//            FieldOfStudy = models.Field_Of_Study,
-//            StartDate = models.Start_Date,
-//            EndDate = models.End_Date,
-//            StillAttending = models.Still_Attending,
-//            Description = models.Description,
-//            Version = models.Version,
-//            CreatedAt = models.CreatedAt,
-//            UpdatedAt = models.UpdatedAt,
-//            IsDelete = false
-//        };
-//    }
+        if (item is null) { return null; }
 
-//    private static EducationsViewModels ReviewsViewModelsMapping(TblApplicantEducation table)
-//    {
-//        return new EducationsViewModels
-//        {
-//            //ApplicantEducationsId = Guid.NewGuid(),
-//            ApplicantProfilesId = table.ApplicantProfilesId,
-//            School_Name = table.SchoolName,
-//            Degree = table.Degree,
-//            Field_Of_Study = table.FieldOfStudy,
-//            Start_Date = table.StartDate,
-//            End_Date = table.EndDate,
-//            Still_Attending = table.StillAttending,
-//            Description = table.Description,
-//            Version = table.Version,
-//            CreatedAt = table.CreatedAt,
-//            UpdatedAt = table.UpdatedAt,
-//            //IsDelete = false
-//        };
-//    }
-//}
+        if (item.Ratings != 0)
+        {
+            item.Ratings = models.Ratings;
+        }
+        if (!string.IsNullOrEmpty(models.Comments))
+        {
+            item.Comments = models.Comments;
+        }
+        item.Version += 1;
+        item.UpdatedAt = DateTime.UtcNow;
+
+        _db.Entry(item).State = EntityState.Modified;
+        await _db.SaveChangesAsync();
+
+        models = ReviewsViewModelsMapping(item);
+
+        return models;
+    }
+
+    public async Task<bool?> DeleteReview(string id, string userid)
+    {
+        var usercheck = await _db.TblApplicantProfiles
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.IsDelete == false
+            && x.UserId.ToString() == userid);
+
+        if (usercheck == null) return null;
+
+        var item = await _db.TblReviews
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.ReviewsId.ToString() == id
+            && x.IsDelete == false 
+            && x.ApplicantProfilesId == usercheck.ApplicantProfilesId);
+
+        if (item is null)
+        {
+            return null;
+        }
+
+        item.Version += 1;
+        item.UpdatedAt = DateTime.UtcNow;
+        item.IsDelete = true;
+
+        _db.Entry(item).State = EntityState.Modified;
+        var result = await _db.SaveChangesAsync();
+
+        return result > 0;
+    }
+
+    private static TblReview ReviewsMapping(ReviewViewModels models)
+    {
+        return new TblReview
+        {
+            ReviewsId = Guid.NewGuid(),
+            CompanyProfilesId = models.CompanyProfilesId,
+            ApplicantProfilesId = models.ApplicantProfilesId,
+            Ratings = models.Ratings,
+            Comments = models.Comments,
+            Version = models.Version,
+            CreatedAt = models.CreatedAt,
+            UpdatedAt = models.UpdatedAt,
+            IsDelete = false
+        };
+    }
+
+    private static ReviewViewModels ReviewsViewModelsMapping(TblReview table)
+    {
+        return new ReviewViewModels
+        {
+            //ApplicantEducationsId = Guid.NewGuid(),
+            CompanyProfilesId = table.CompanyProfilesId,
+            ApplicantProfilesId = table.ApplicantProfilesId,
+            Ratings = table.Ratings,
+            Comments = table.Comments,
+            Version = table.Version,
+            CreatedAt = table.CreatedAt,
+            UpdatedAt = table.UpdatedAt,
+            //IsDelete = false
+        };
+    }
+
+}

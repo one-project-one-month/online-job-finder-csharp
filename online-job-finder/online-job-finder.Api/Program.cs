@@ -94,6 +94,9 @@ builder.Services.AddScoped<IApplicant_EducationsRepository, Applicant_Educations
 
 builder.Services.AddScoped<IApplicant_ExperiencesRepository, Applicant_ExperiencesRepository>();
 
+builder.Services.AddScoped<IReviewsRepository, ReviewsRepository>();
+
+builder.Services.AddScoped<IApplicant_SkillsRepository, Applicant_SkillsRepository>();
 
 builder.Services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
 

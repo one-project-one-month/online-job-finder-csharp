@@ -11,4 +11,8 @@
     <ProjectReference Include="..\online-job-finder.DataBase\online-job-finder.DataBase.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Applicant_JobCategoryServices\" />
+  </ItemGroup>
+
 </Project>
