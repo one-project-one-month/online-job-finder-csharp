@@ -9,3 +9,5 @@ global using System.Security.Claims;
 global using System.Security.Cryptography;
 global using System.Text;
 global using System.Text.Json.Serialization;
+global using System.ComponentModel.DataAnnotations;
+
