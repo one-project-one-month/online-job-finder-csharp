@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
-using Mysqlx.Crud;
-
-namespace online_job_finder.Domain.Services.Applicant_SkillsServices
+﻿namespace online_job_finder.Domain.Services.Applicant_SkillsServices
 {
     public class Applicant_SkillsRepository : IApplicant_SkillsRepository
     {
@@ -74,9 +70,9 @@ namespace online_job_finder.Domain.Services.Applicant_SkillsServices
                                     .ToList(),
                     ApplicantProfilesId = g.Key,  // The ApplicantProfilesId for the group
                     ExtraSkills = g.FirstOrDefault()?.ExtraSkills,
-                    Version = g.FirstOrDefault()!.Version,  
+                    Version = g.FirstOrDefault()!.Version,
                     CreatedAt = g.FirstOrDefault()!.CreatedAt,
-                    UpdatedAt = g.FirstOrDefault()?.UpdatedAt  
+                    UpdatedAt = g.FirstOrDefault()?.UpdatedAt
                 })
                 .ToList();
 

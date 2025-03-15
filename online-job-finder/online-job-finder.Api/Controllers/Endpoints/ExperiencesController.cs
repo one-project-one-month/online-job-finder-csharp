@@ -1,6 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-
-namespace online_job_finder.Api.Controllers.Endpoints;
+﻿namespace online_job_finder.Api.Controllers.Endpoints;
 
 [Authorize(Roles = "Applicants")]
 [Route("api/me/[controller]")]
@@ -87,7 +85,7 @@ public class ExperiencesController : ControllerBase
     public async Task<IActionResult> DeleteApplicant_Experience(string id)
     {
         var item = await _applicant_ExperiencesRepository.DeleteApplicant_Experience(id);
-        
+
         if (item is null)
         {
             return BadRequest("Don`t have data");

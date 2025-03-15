@@ -1,20 +1,20 @@
 ﻿namespace online_job_finder.Api.Controllers.Endpoints;
 
 [Authorize(Roles = "Applicants")]
-[Route("api/me/[controller]")]
+[Route("api/[controller]")]
 [ApiController]
-public class Applicant_SkillsController : ControllerBase
+public class Applicant_JobCategoryController : ControllerBase
 {
-    private readonly IApplicant_SkillsRepository _applicant_SkillsRepository;
+    private readonly IApplicant_JobCategoryRepository _applicant_JobCategoryRepository;
     private const string claimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
 
-    public Applicant_SkillsController()
+    public Applicant_JobCategoryController()
     {
-        _applicant_SkillsRepository = new Applicant_SkillsRepository();
+        _applicant_JobCategoryRepository = new Applicant_JobCategoryRepository();
     }
 
-    [HttpPost("createapplicant_skills")]
-    public async Task<IActionResult> CreateApplicant_Skills(Applicant_SkillsViewModels models)
+    [HttpPost("createapplicant_jobcategory")]
+    public async Task<IActionResult> CreateApplicant_JobCategory(Applicant_JobCategoryViewModels models)
     {
         var authorizationHeader = Request.Headers["Authorization"].ToString();
         if (string.IsNullOrEmpty(authorizationHeader) || !authorizationHeader.StartsWith("Bearer "))
@@ -29,16 +29,17 @@ public class Applicant_SkillsController : ControllerBase
             return Unauthorized("Invalid token or NameIdentifier not found.");
         }
 
-        var items = await _applicant_SkillsRepository.CreateApplicant_Skills(models, userId);
+        var items = await _applicant_JobCategoryRepository
+            .CreateApplicant_JobCategory(models, userId);
         if (items == null)
         {
-            return BadRequest("Invalid skill.");
+            return BadRequest("Invalid JobCategory.");
         }
         return Ok(items);
     }
 
-    [HttpGet("getapplicant_skills")]
-    public async Task<IActionResult> GetApplicant_Skills()
+    [HttpGet("getapplicant_jobcategories")]
+    public async Task<IActionResult> GetApplicant_JobCategories()
     {
         var authorizationHeader = Request.Headers["Authorization"].ToString();
         if (string.IsNullOrEmpty(authorizationHeader) || !authorizationHeader.StartsWith("Bearer "))
@@ -53,7 +54,8 @@ public class Applicant_SkillsController : ControllerBase
             return Unauthorized("Invalid token or NameIdentifier not found.");
         }
 
-        var items = await _applicant_SkillsRepository.GetApplicant_Skills(userId);
+        var items = await _applicant_JobCategoryRepository
+            .GetApplicant_JobCategories(userId);
 
         return Ok(items);
     }
