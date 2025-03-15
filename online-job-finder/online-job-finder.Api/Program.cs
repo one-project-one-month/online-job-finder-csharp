@@ -103,6 +103,19 @@ builder.Services.AddScoped<IApplicant_JobCategoryRepository, Applicant_JobCatego
 builder.Services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
 
 builder.Services.AddScoped<ICompanyProfileServices, CompanyProfileServices>();
+
+
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+
+builder.Services.AddScoped<IApplicantProfileRepository, ApplicantProfileRepository>();
+
+builder.Services.AddScoped<IResumeRepository, ResumeRepository>();
+
+builder.Services.AddScoped<IUploadImageRepository, UploadImageRepository>();
+
+builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
+
+
 builder.Services.AddHttpContextAccessor();
 
 
