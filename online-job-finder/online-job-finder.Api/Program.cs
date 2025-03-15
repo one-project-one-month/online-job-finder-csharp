@@ -1,12 +1,3 @@
-
-using online_job_finder.Domain.Services.CompanyServices;
-=======
-using online_job_finder.Domain.Services.ApplicantProfileServices;
-using online_job_finder.Domain.Services.ApplicationServies;
-using online_job_finder.Domain.Services.ResumeServices;
-using online_job_finder.Domain.Services.UploadImage;
-
-
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -115,7 +106,6 @@ builder.Services.AddScoped<ICompanyProfileServices, CompanyProfileServices>();
 
 
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
-=======
 
 builder.Services.AddScoped<IApplicantProfileRepository, ApplicantProfileRepository>();
 
