@@ -1,3 +1,8 @@
+using online_job_finder.Domain.Services.ApplicantProfileServices;
+using online_job_finder.Domain.Services.ApplicationServies;
+using online_job_finder.Domain.Services.ResumeServices;
+using online_job_finder.Domain.Services.UploadImage;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -103,6 +108,16 @@ builder.Services.AddScoped<IApplicant_JobCategoryRepository, Applicant_JobCatego
 builder.Services.AddScoped<IJobCategoryRepository, JobCategoryRepository>();
 
 builder.Services.AddScoped<ICompanyProfileServices, CompanyProfileServices>();
+
+
+builder.Services.AddScoped<IApplicantProfileRepository, ApplicantProfileRepository>();
+
+builder.Services.AddScoped<IResumeRepository, ResumeRepository>();
+
+builder.Services.AddScoped<IUploadImageRepository, UploadImageRepository>();
+
+builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
+
 builder.Services.AddHttpContextAccessor();
 
 
