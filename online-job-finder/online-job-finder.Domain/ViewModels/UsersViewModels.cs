@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace online_job_finder.Domain.ViewModels;
+﻿namespace online_job_finder.Domain.ViewModels;
 
 public class UsersViewModels
 {
