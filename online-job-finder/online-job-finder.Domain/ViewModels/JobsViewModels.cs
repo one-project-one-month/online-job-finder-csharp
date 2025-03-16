@@ -1,4 +1,4 @@
-﻿using online_job_finder.DataBase.Models;
+using online_job_finder.DataBase.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

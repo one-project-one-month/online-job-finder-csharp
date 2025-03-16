@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace online_job_finder.DataBase.Models;
+﻿namespace online_job_finder.DataBase.Models;
 
 public partial class TblReview
 {
