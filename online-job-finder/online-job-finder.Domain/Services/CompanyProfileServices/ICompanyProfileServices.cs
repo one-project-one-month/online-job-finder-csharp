@@ -12,5 +12,6 @@ public interface ICompanyProfileServices
     List<ApplicationViewModel> GetJobApplications(string jobId);
     List<ApplicationViewModel> GetShortlistedApplications(string jobId);
     bool UpdateApplicationStatus(string applicationId, string status);
-    List<ReviewViewModel> GetCompanyReviews(Guid companyId);
+    // List<ReviewViewModel> GetCompanyReviews(Guid companyId);
+    CompanyReviewsViewModel GetCompanyReviews(Guid companyId);
 }

@@ -126,7 +126,7 @@ public class CompanyProfileServices : ICompanyProfileServices
         return jobs;
     }
 
-    public List<ReviewViewModel> GetCompanyReviews(Guid companyId)
+    public CompanyReviewsViewModel GetCompanyReviews(Guid companyId)
     {
         var reviews = _db.TblReviews
             .AsNoTracking()
@@ -144,7 +144,21 @@ public class CompanyProfileServices : ICompanyProfileServices
             .OrderByDescending(x => x.CreatedAt)
             .ToList();
 
-        return reviews;
+        // caculate average rating
+        double averageRating = 0;
+        if (reviews.Any())
+        {
+            averageRating = (double)reviews.Average(r => r.Ratings);
+        }
+
+        var companyAverageReviews = new CompanyReviewsViewModel
+        {
+            Reviews = reviews,
+            AverageRating = averageRating,
+            TotalReviews = reviews.Count
+        };
+
+        return companyAverageReviews;
     }
 
     public List<ApplicationViewModel> GetJobApplications(string jobId)
