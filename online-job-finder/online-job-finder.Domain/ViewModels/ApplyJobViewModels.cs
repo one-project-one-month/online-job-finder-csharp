@@ -14,10 +14,9 @@ namespace online_job_finder.Domain.ViewModels
 
         public Guid ApplicantProfilesId { get; set; }
 
-        public Guid ResumesId { get; set; }
+        public Guid ResumesId { get; set; }        
 
-        public string Status { get; set; } = null!;
-
+        public String Status { get; set; }= "Pending";
         public int Version { get; set; }
 
         public DateTime CreatedAt { get; set; }
