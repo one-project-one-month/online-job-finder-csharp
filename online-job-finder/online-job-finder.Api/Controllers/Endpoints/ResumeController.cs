@@ -1,6 +1,4 @@
-﻿using online_job_finder.Domain.Services.ResumeServices;
-
-namespace online_job_finder.Api.Controllers.Endpoints;
+﻿namespace online_job_finder.Api.Controllers.Endpoints;
 
 [Authorize(Roles = "Applicants")]
 [Route("api/me/resume")]
@@ -14,7 +12,7 @@ public class ResumeController : Controller
     public ResumeController(IResumeRepository resumeRepository)
     {
         _resumeRepository = resumeRepository;
-                }
+    }
 
     [Authorize(Roles = "Applicants, Recruiters")]
     [HttpGet]

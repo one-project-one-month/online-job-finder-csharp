@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using online_job_finder.Domain.Services.CompanyProfileServices.CompanyProfileResponses;
-using online_job_finder.Domain.Services.CompanyServices;
-
-namespace online_job_finder.Api.Controllers.Endpoints;
+﻿namespace online_job_finder.Api.Controllers.Endpoints;
 
 [Authorize(Roles = "Recruiters")]
 [Route("api/recruiter")]
@@ -19,7 +15,7 @@ public class CompanyController : ControllerBase
     [HttpPost]
     public IActionResult CreateCompany(CompanyUsersViewModels reqModel)
     {
-         var item = _companyRepository.CreateCompany(reqModel);
+        var item = _companyRepository.CreateCompany(reqModel);
         return Ok(item);
     }
 

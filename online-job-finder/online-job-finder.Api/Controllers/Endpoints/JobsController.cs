@@ -1,8 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-using online_job_finder.DataBase.Models;
-using online_job_finder.Domain.Services.JobServices;
-using online_job_finder.Domain.ViewModels;
-
 namespace online_job_finder.Api.Controllers.Endpoints
 {
     [Route("api/[controller]")]
@@ -43,7 +38,7 @@ namespace online_job_finder.Api.Controllers.Endpoints
             return Ok(job);
         }
         [Authorize(Roles = "Recruiters")]
-        [HttpPost("createjob")]        
+        [HttpPost("createjob")]
         public IActionResult CreateJob(JobsViewModels models)
         {
             var items = _jobRepo.CreateJob(models);
@@ -85,12 +80,13 @@ namespace online_job_finder.Api.Controllers.Endpoints
                 return BadRequest("Don`t have data");
             }
             return Ok("Deleting success");
-        }     
+        }
 
+        [Authorize(Roles = "Admins,Company,Applicants,Recruiters")]
         [HttpPost("search")]
         public IActionResult SearchWithParam([FromBody] JobSearchParameters searchParameters)
-        { 
-            if(String.IsNullOrEmpty(searchParameters.Title) &&
+        {
+            if (String.IsNullOrEmpty(searchParameters.Title) &&
                 String.IsNullOrEmpty(searchParameters.Location) &&
                 String.IsNullOrEmpty(searchParameters.Industry) &&
                 String.IsNullOrEmpty(searchParameters.Type))
@@ -104,18 +100,19 @@ namespace online_job_finder.Api.Controllers.Endpoints
             }
             return Ok(jobs);
         }
+
         [Authorize(Roles = "Applicants")]
         [HttpPost("applyjob")]
         public IActionResult applyJob(ApplyJobViewModels models)
         {
             var items = _jobRepo.applyJob(models);
-            if(items is null)
+            if (items is null)
             {
                 return BadRequest("Already applied or Require Data!");
             }
             return Ok("Success!");
         }
-        
+
         [Authorize(Roles = "Applicants")]
         [HttpGet("getallappliedjob/{applicantProfileId}")]
         public IActionResult GetAppliedJobs(string applicantProfileId)
@@ -124,17 +121,17 @@ namespace online_job_finder.Api.Controllers.Endpoints
 
             return Ok(items);
         }
-        
+
         [Authorize(Roles = "Applicants")]
         [HttpPost("savejob")]
         public IActionResult saveJob(SavedJobViewModel models)
         {
-            if(models is null)
+            if (models is null)
             {
                 return BadRequest("Don`t have data");
             }
             var items = _jobRepo.saveJob(models);
-            if(items is null)
+            if (items is null)
             {
                 return BadRequest("Already saved or Require Data!");
             }

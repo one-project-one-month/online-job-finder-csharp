@@ -1,6 +1,3 @@
-using System;
-using online_job_finder.Domain.Services.CompanyProfileServices.CompanyProfileResponses;
-
 namespace online_job_finder.Domain.Services.CompanyProfileServices;
 
 public interface ICompanyProfileServices

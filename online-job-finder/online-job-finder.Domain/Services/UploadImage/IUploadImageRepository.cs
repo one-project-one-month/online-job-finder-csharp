@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace online_job_finder.Domain.Services.UploadImage;
+﻿namespace online_job_finder.Domain.Services.UploadImage;
 
 public interface IUploadImageRepository
 {

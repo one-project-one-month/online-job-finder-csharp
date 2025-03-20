@@ -1,9 +1,3 @@
-using System;
-using Microsoft.EntityFrameworkCore;
-using online_job_finder.DataBase.Models;
-using online_job_finder.Domain.Services.CompanyProfileServices.CompanyProfileResponses;
-using online_job_finder.Domain.ViewModels;
-
 namespace online_job_finder.Domain.Services.CompanyProfileServices;
 
 public class CompanyProfileServices : ICompanyProfileServices

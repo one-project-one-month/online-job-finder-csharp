@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace online_job_finder.Domain.Services.CompanyServices;
 
-namespace online_job_finder.Domain.Services.CompanyServices
+public interface ICompanyRepository
 {
-    public interface ICompanyRepository
-    {
-        CompanyUsersViewModels CreateCompany(CompanyUsersViewModels reqModel);
+    CompanyUsersViewModels CreateCompany(CompanyUsersViewModels reqModel);
 
-        List<CompanyUsersViewModels> GetCompanies();
+    List<CompanyUsersViewModels> GetCompanies();
 
-        CompanyUsersViewModels GetCompanyById(string userId);
+    CompanyUsersViewModels GetCompanyById(string userId);
 
-    }
 }

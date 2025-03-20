@@ -1,5 +1,3 @@
-using System;
-
 namespace online_job_finder.Domain.Services.CompanyProfileServices.CompanyProfileResponses;
 
 public class CompanyProfileJobViewModel
