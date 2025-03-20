@@ -1,6 +1,6 @@
 namespace online_job_finder.Api.Controllers.Endpoints;
 
-[Authorize(Roles = "Recruiter")]
+[Authorize(Roles = "Recruiters")]
 [Route("api/recruiter")]
 [ApiController]
 public class CompanyProfileController : ControllerBase

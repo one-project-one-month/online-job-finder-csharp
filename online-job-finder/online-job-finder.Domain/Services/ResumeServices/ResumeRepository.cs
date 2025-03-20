@@ -1,6 +1,4 @@
-﻿using online_job_finder.Domain.Services.UploadImage;
-
-namespace online_job_finder.Domain.Services.ResumeServices;
+﻿namespace online_job_finder.Domain.Services.ResumeServices;
 
 public class ResumeRepository : IResumeRepository
 {

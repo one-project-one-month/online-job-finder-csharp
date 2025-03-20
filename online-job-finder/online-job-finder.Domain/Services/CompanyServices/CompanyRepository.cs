@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
-
-namespace online_job_finder.Domain.Services.CompanyServices;
+﻿namespace online_job_finder.Domain.Services.CompanyServices;
 
 public class CompanyRepository : ICompanyRepository
 {
@@ -137,7 +130,7 @@ public class CompanyRepository : ICompanyRepository
         };
     }
 
-    private static CompanyUsersViewModels CompanyViewMapping(TblCompanyProfile reqModel )
+    private static CompanyUsersViewModels CompanyViewMapping(TblCompanyProfile reqModel)
     {
         return new CompanyUsersViewModels
         {
