@@ -8,7 +8,7 @@ public class SavedJobViewModel
 
     public Guid ApplicantProfilesId { get; set; }
 
-    public string Status { get; set; } = null!;
+    public string Status { get; set; }
 
     public int Version { get; set; }
 
