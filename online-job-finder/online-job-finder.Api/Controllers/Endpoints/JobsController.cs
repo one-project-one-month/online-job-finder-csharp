@@ -85,40 +85,70 @@ namespace online_job_finder.Api.Controllers.Endpoints
                 return BadRequest("Don`t have data");
             }
             return Ok("Deleting success");
-        }
-        [HttpGet("search")]
-        public IActionResult SearchJob([FromQuery] string[] q, [FromQuery] string[] location, [FromQuery] string[] category, [FromQuery] string[] type)
-        {
-            System.Console.WriteLine($"Query: {string.Join(", ", q)}");
-            System.Console.WriteLine($"Location: {string.Join(", ", location)}");
-            System.Console.WriteLine($"Category: {string.Join(", ", category)}");
-            System.Console.WriteLine($"Type: {string.Join(", ", type)}");
+        }     
 
-            var requestJob = new JobSearchParameters(q, location, category, type);
-
-
-            var jobs = _jobRepo.GetJobsAsync(requestJob);
-
+        [HttpPost("search")]
+        public IActionResult SearchWithParam([FromBody] JobSearchParameters searchParameters)
+        { 
+            if(String.IsNullOrEmpty(searchParameters.Title) &&
+                String.IsNullOrEmpty(searchParameters.Location) &&
+                String.IsNullOrEmpty(searchParameters.Industry) &&
+                String.IsNullOrEmpty(searchParameters.Type))
+            {
+                return BadRequest("Don`t have search data");
+            }
+            var jobs = _jobRepo.GetJobsAsync(searchParameters);
+            if (jobs == null)
+            {
+                return BadRequest("Don`t have query data");
+            }
             return Ok(jobs);
-
         }
         [Authorize(Roles = "Applicants")]
         [HttpPost("applyjob")]
         public IActionResult applyJob(ApplyJobViewModels models)
         {
             var items = _jobRepo.applyJob(models);
+            if(items is null)
+            {
+                return BadRequest("Already applied or Require Data!");
+            }
+            return Ok("Success!");
+        }
+        
+        [Authorize(Roles = "Applicants")]
+        [HttpGet("getallappliedjob/{applicantProfileId}")]
+        public IActionResult GetAppliedJobs(string applicantProfileId)
+        {
+            var items = _jobRepo.GetAppliedJobs(applicantProfileId);
 
             return Ok(items);
         }
+        
         [Authorize(Roles = "Applicants")]
         [HttpPost("savejob")]
-        public IActionResult saveyJob(SavedJobViewModels models)
+        public IActionResult saveJob(SavedJobViewModel models)
         {
+            if(models is null)
+            {
+                return BadRequest("Don`t have data");
+            }
             var items = _jobRepo.saveJob(models);
+            if(items is null)
+            {
+                return BadRequest("Already saved or Require Data!");
+            }
+            return Ok("Success!");
+        }
+
+        [Authorize(Roles = "Applicants")]
+        [HttpGet("getsavedjob/{applicantProfileId}")]
+        public IActionResult GetSavedJobs(string applicantProfileId)
+        {
+            var items = _jobRepo.GetSavedJobs(applicantProfileId);
 
             return Ok(items);
         }
-
     }
 
 }

@@ -3,9 +3,11 @@ using Mysqlx;
 using online_job_finder.DataBase.Models;
 using online_job_finder.Domain.ViewModels;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace online_job_finder.Domain.Services.JobServices
 {
@@ -56,48 +58,24 @@ namespace online_job_finder.Domain.Services.JobServices
         }
         public JobsViewModels CreateJob(JobsViewModels model)
         {
+
             model.Version += 1;
             model.UpdatedAt = null;
 
-            var existingCompany = _context.TblCompanyProfiles.FirstOrDefault(x => x.CompanyName == model.CompanyName);
-            var existingJobCategory = _context.TblJobCategories.FirstOrDefault(x => x.Industry == model.Industry);
-            var existingLocation = _context.TblLocations.FirstOrDefault(x => x.LocationName == model.LocationName);            
-            var application = _context.TblApplications.FirstOrDefault(x => x.JobsId == model.JobsId);
-            var jobSkill = _context.TblJobSkills.FirstOrDefault(x => x.JobsId == model.JobsId);
-            var savedJob = _context.TblSavedJobs.FirstOrDefault(x => x.JobsId == model.JobsId);
-
-            TblJob job = Change(model);
-            if (existingCompany != null)
+            var company = _context.TblCompanyProfiles.FirstOrDefault(x => x.CompanyProfilesId == model.CompanyProfilesId && model.IsDelete == false);
+            var location = _context.TblLocations.FirstOrDefault(x => x.LocationId == model.LocationId && model.IsDelete == false);
+            var jobCategory = _context.TblJobCategories.FirstOrDefault(x => x.JobCategoriesId == model.JobCategoryId && model.IsDelete == false);
+            if (company != null && location != null && jobCategory != null)
             {
-                job.CompanyProfilesId = existingCompany.CompanyProfilesId;
-                job.CompanyProfiles = existingCompany;
+                var job = Change(model);
+                _context.TblJobs.Add(job);
+                _context.SaveChanges();
+                return JobsViewModelsMapping(job);
             }
-            if (existingJobCategory != null)
+            else
             {
-                job.JobCategoriesId = existingJobCategory.JobCategoriesId;
-                job.JobCategories = existingJobCategory;
+                return null;
             }
-            if (existingLocation != null)
-            {
-                job.LocationId = existingLocation.LocationId;
-                job.Location = existingLocation;
-            }
-            job.Title = model.Title;
-            job.Type = model.Type;
-            job.Description = model.Description;
-            job.Requirements = model.Requirements;            
-            job.Salary = model.Salary;
-            job.Address = model.Address;
-            job.Status = model.Status;
-
-            job.CreatedAt = DateTime.UtcNow;
-            job.UpdatedAt = DateTime.UtcNow;
-            job.IsDelete = false;
-
-            _context.TblJobs.Add(job);
-            _context.SaveChanges();
-
-            return JobsViewModelsMapping(job);
         }
         public JobsViewModels? UpdateJob(string id, JobsViewModels model)
         {
@@ -112,24 +90,33 @@ namespace online_job_finder.Domain.Services.JobServices
 
             #region Modified data Validation Conditions
             //Assume CompanyName,LocationName are already registered!
-            if (!string.IsNullOrEmpty(model.CompanyName))
+            if (item.CompanyProfilesId != model.CompanyProfilesId)
             {
-                var requestCompany = _context.TblCompanyProfiles.FirstOrDefault(x => x.CompanyName == model.CompanyName && model.IsDelete == false);
-                if (requestCompany != null)
-                {
-                    item.CompanyProfilesId = requestCompany.CompanyProfilesId;
-                    item.CompanyProfiles = requestCompany;
-                }
+                var requestCompany = _context.TblCompanyProfiles.FirstOrDefault(x => x.CompanyProfilesId == model.CompanyProfilesId && model.IsDelete == false);
+
+                if (requestCompany is null) { return null; }
+
+                item.CompanyProfilesId = requestCompany.CompanyProfilesId;
+                item.CompanyProfiles = requestCompany;
 
             }
-            if (!string.IsNullOrEmpty(model.LocationName))
+            if (item.LocationId != model.LocationId)
             {
-                var requestLocation = _context.TblLocations.FirstOrDefault(x => x.LocationName == model.LocationName && model.IsDelete == false);
-                if (requestLocation != null)
-                {
-                    item.LocationId = requestLocation.LocationId;
-                    item.Location = requestLocation;
-                }
+                var requestLocation = _context.TblLocations.FirstOrDefault(x => x.LocationId == model.LocationId && model.IsDelete == false);
+                if (requestLocation is null) { return null; }
+                item.LocationId = requestLocation.LocationId;
+                item.Location = requestLocation;
+            }
+
+
+            if (item.JobCategoriesId != model.JobCategoryId)
+            {
+                var requestCategory = _context.TblJobCategories.FirstOrDefault(x => x.JobCategoriesId == model.JobCategoryId && model.IsDelete == false);
+
+                if (requestCategory is null) { return null; }
+                item.JobCategoriesId = requestCategory.JobCategoriesId;
+                item.JobCategories = requestCategory;
+
             }
 
             if (item.Title != model.Title)
@@ -177,24 +164,36 @@ namespace online_job_finder.Domain.Services.JobServices
 
             #region Modified data Validation Conditions
             //Assume CompanyName,LocationName are already registered!
-            if (!string.IsNullOrEmpty(model.CompanyName))
+            if (item.CompanyProfilesId != model.CompanyProfilesId)
             {
-                var requestCompany = _context.TblCompanyProfiles.FirstOrDefault(x => x.CompanyName == model.CompanyName && model.IsDelete == false);
+                var requestCompany = _context.TblCompanyProfiles.FirstOrDefault(x => x.CompanyProfilesId == model.CompanyProfilesId && model.IsDelete == false);
                 if (requestCompany != null)
                 {
                     item.CompanyProfilesId = requestCompany.CompanyProfilesId;
                     item.CompanyProfiles = requestCompany;
                 }
+                else { return null; }
 
             }
-            if (!string.IsNullOrEmpty(model.LocationName))
+            if (item.LocationId != model.LocationId)
             {
-                var requestLocation = _context.TblLocations.FirstOrDefault(x => x.LocationName == model.LocationName && model.IsDelete == false);
+                var requestLocation = _context.TblLocations.FirstOrDefault(x => x.LocationId == model.LocationId && model.IsDelete == false);
                 if (requestLocation != null)
                 {
                     item.LocationId = requestLocation.LocationId;
                     item.Location = requestLocation;
                 }
+                else { return null; }
+            }
+            if (item.JobCategoriesId != model.JobCategoryId)
+            {
+                var requestCategory = _context.TblJobCategories.FirstOrDefault(x => x.JobCategoriesId == model.JobCategoryId && model.IsDelete == false);
+                if (requestCategory != null)
+                {
+                    item.JobCategoriesId = requestCategory.JobCategoriesId;
+                    item.JobCategories = requestCategory;
+                }
+                else { return null; }
             }
 
             if (item.Title != model.Title)
@@ -227,28 +226,40 @@ namespace online_job_finder.Domain.Services.JobServices
 
             return model;
         }
-        public List<JobsViewModels> GetJobsAsync(JobSearchParameters requestJob)
+        public List<JobsViewModels> GetJobsAsync(JobSearchParameters searchParam)
         {
             var jobs = _context.TblJobs
-                .AsNoTracking()
-                .Include(x => x.CompanyProfiles)
-                .Include(x => x.JobCategories)
-                .Include(x => x.Location)
-                .OrderBy(x => x.Version)
-                .ToList();
+                       .AsNoTracking()
+                       .Include(x => x.CompanyProfiles)
+                       .Include(x => x.JobCategories)
+                       .Include(x => x.Location)
+                       .Where(x => x.Status == "Open" && x.IsDelete == false)
+                       .OrderBy(x => x.Version).AsQueryable();
 
-            var filteredJobs = jobs.FindAll(job =>
-                (requestJob.Q == null || requestJob.Q.Length == 0 || string.IsNullOrWhiteSpace(requestJob.Q[0]) || requestJob.Q.Contains(job.Title)) &&
-                (requestJob.Location == null || requestJob.Location.Length == 0 || string.IsNullOrWhiteSpace(requestJob.Location[0]) || requestJob.Location.Contains(job.Location.LocationName)) &&
-                (requestJob.Category == null || requestJob.Category.Length == 0 || string.IsNullOrWhiteSpace(requestJob.Category[0]) || requestJob.Category.Contains(job.JobCategories.Industry)) &&
-                (requestJob.Type == null || requestJob.Type.Length == 0 || string.IsNullOrWhiteSpace(requestJob.Type[0]) || requestJob.Type.Contains(job.Type))
-            );
-
-            var jobViewModels = filteredJobs.Select(JobsViewModelsMapping).ToList();
-            return jobViewModels;
+            if (!string.IsNullOrEmpty(searchParam.Title))
+            {
+                jobs = jobs.Where(x => x.Title.Contains(searchParam.Title));
+            }
+            if (!string.IsNullOrEmpty(searchParam.Location))
+            {
+                jobs = jobs.Where(x => x.Location.LocationName.Contains(searchParam.Location));
+            }
+            if (!string.IsNullOrEmpty(searchParam.Industry))
+            {
+                jobs = jobs.Where(x => x.JobCategories.Industry.Contains(searchParam.Industry));
+            }
+            if (!string.IsNullOrEmpty(searchParam.Type))
+            {
+                jobs = jobs.Where(x => x.Type.Contains(searchParam.Type));
+            }
+            var searchResult = jobs.ToList();
+            if (searchResult.Count < 0) { return null; }
+            var resultJobs = searchResult.Select(JobsViewModelsMapping).ToList();
+            return resultJobs;
         }
-        public object applyJob(ApplyJobViewModels requestModel)
-        {            
+
+        public bool? applyJob(ApplyJobViewModels requestModel)
+        {
             requestModel.Version += 1;
             requestModel.UpdatedAt = null;
 
@@ -261,8 +272,7 @@ namespace online_job_finder.Domain.Services.JobServices
                                    && x.IsDelete == false);
             if (checkApplication != null)
             {
-                //already appied
-                return null;
+                return null;    //already appied
             }
 
             var requestJob = _context.TblJobs.AsNoTracking()
@@ -284,7 +294,7 @@ namespace online_job_finder.Domain.Services.JobServices
             }
             if (requestApplicant == null || requestResume == null)
             {
-                return null; // Or handle the error as needed
+                return null;
             }
 
             //apply job
@@ -311,19 +321,11 @@ namespace online_job_finder.Domain.Services.JobServices
             jobApplication.Resumes = requestResume;
             _context.TblApplications.Add(jobApplication);
             var result = _context.SaveChanges();
-            if (result > 0)
-            {
-                return jobApplication;
-            }
-            else
-            {
-                // Log or handle the case where no changes were made
-                return null;
-            }
+            return result > 0;          
 
         }
 
-        public object saveJob(SavedJobViewModels requestModel)
+        public bool? saveJob(SavedJobViewModel requestModel)
         {
             var checkSavedJob = _context.TblSavedJobs.AsNoTracking()
                                 .FirstOrDefault(x => x.JobsId == requestModel.JobsId
@@ -331,39 +333,38 @@ namespace online_job_finder.Domain.Services.JobServices
                                 && x.IsDelete == false);
             if (checkSavedJob != null)
             {
-                return checkSavedJob;
+                return null; //already savedJob
             }
-            else
+            requestModel.Version += 1;
+            requestModel.UpdatedAt = null;
+            var requestJob = _context.TblJobs.AsNoTracking()
+                             .Include(x => x.CompanyProfiles)
+                             .Include(x => x.JobCategories)
+                             .Include(x => x.Location)
+                             .FirstOrDefault(x => x.JobsId == requestModel.JobsId
+                             && x.Status == "Open" && x.IsDelete == false);
+            var requestApplicant = _context.TblApplicantProfiles.AsNoTracking()
+                                   .FirstOrDefault(x => x.ApplicantProfilesId == requestModel.ApplicantProfilesId
+                                   && x.IsDelete == false);
+            if(requestApplicant == null || requestJob == null)
             {
-                requestModel.Version += 1;
-                requestModel.UpdatedAt = null;
-                var requestJob = _context.TblJobs.AsNoTracking()
-                                 .Include(x => x.CompanyProfiles)
-                                 .Include(x => x.JobCategories)
-                                 .Include(x => x.Location)
-                                 .FirstOrDefault(x => x.JobsId == requestModel.JobsId
-                                 && x.Status == "Active" && x.IsDelete == false);
-                var requestApplicant = _context.TblApplicantProfiles.AsNoTracking()
-                                       .FirstOrDefault(x => x.ApplicantProfilesId == requestModel.ApplicantProfilesId
-                                       && x.IsDelete == false);
-                // Example logic to save the job to the database
-                var savedJob = new TblSavedJob
-                {
-                    SavedJobsId = Guid.NewGuid(),
-                    JobsId = requestModel.JobsId,
-                    ApplicantProfilesId = requestModel.ApplicantProfilesId,
-                    Status = requestModel.Status,
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = requestModel.UpdatedAt,
-                    IsDelete = false
-                };
-
-                _context.TblSavedJobs.Add(savedJob);
-                _context.SaveChanges();
-
-                return savedJob;
+                return null;
             }
+            var savedJob = new TblSavedJob
+            {
+                SavedJobsId = Guid.NewGuid(),
+                JobsId = requestJob.JobsId,
+                ApplicantProfilesId = requestApplicant.ApplicantProfilesId,  
+                Status = requestModel.Status,
+                Version = requestModel.Version,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                IsDelete = false
+            };
 
+            _context.TblSavedJobs.Add(savedJob);
+            var result = _context.SaveChanges();
+            return result > 0; 
         }
         public bool? DeleteJob(string id)
         {
@@ -373,12 +374,12 @@ namespace online_job_finder.Domain.Services.JobServices
                       .Include(x => x.Location)
                       .AsNoTracking()
                       .FirstOrDefault(x => x.JobsId.ToString() == id
-                      && x.IsDelete == false);            
+                      && x.IsDelete == false);
             if (item is not null)
             {
                 item.Version += 1;
                 item.UpdatedAt = DateTime.UtcNow;
-                item.IsDelete = true;               
+                item.IsDelete = true;
 
                 _context.Entry(item).State = EntityState.Modified;
                 var result = _context.SaveChanges();
@@ -387,15 +388,43 @@ namespace online_job_finder.Domain.Services.JobServices
             }
             else { return null; }
         }
-        
+
+        public List<ApplyJobViewModels> GetAppliedJobs(string profileId)
+        {
+            var appliedJobs = _context.TblApplications
+                              .AsNoTracking()
+                              .Include(x => x.Jobs)
+                              .Include(x => x.ApplicantProfiles)
+                              .Include(x => x.Resumes)
+                              .Where(x => x.ApplicantProfilesId.ToString() == profileId
+                              && x.IsDelete == false)
+                              .OrderBy(x => x.Version)
+                              .ToList();
+            var result = appliedJobs.Select(ApplyJobViewModelsMapping).ToList();
+            return result;
+        }
+
+        public List<SavedJobViewModel> GetSavedJobs(string profileId)
+        {
+            var savedJobs = _context.TblSavedJobs
+                            .AsNoTracking()
+                            .Where(x => x.ApplicantProfilesId.ToString() == profileId
+                            && x.IsDelete == false)
+                            .OrderBy(x => x.Version)
+                            .ToList();
+            var result = savedJobs.Select(SavedJobViewModelMapping).ToList();
+            return result;
+        }
+
         private static JobsViewModels JobsViewModelsMapping(TblJob jobs)
         {
             return new JobsViewModels
             {
                 JobsId = jobs.JobsId,
                 Title = jobs.Title,
-                CompanyName = jobs.CompanyProfiles.CompanyName,
-                LocationName = jobs.Location.LocationName,
+                CompanyProfilesId = jobs.CompanyProfilesId,
+                LocationId = jobs.LocationId,
+                JobCategoryId = jobs.JobCategoriesId,
                 Type = jobs.Type,
                 Description = jobs.Description,
                 Requirements = jobs.Requirements,
@@ -404,10 +433,10 @@ namespace online_job_finder.Domain.Services.JobServices
                 Address = jobs.Address,
                 Status = jobs.Status,
                 Version = jobs.Version,
-                IsDelete = jobs.IsDelete,
                 Industry = jobs.JobCategories.Industry,
-                UpdatedAt = jobs.UpdatedAt,
-                CreatedAt = jobs.CreatedAt
+                IsDelete = jobs.IsDelete,
+                CreatedAt = jobs.CreatedAt,
+                UpdatedAt = jobs.UpdatedAt
             };
         }
         private static TblJob Change(JobsViewModels jobs)
@@ -416,6 +445,9 @@ namespace online_job_finder.Domain.Services.JobServices
             return new TblJob()
             {
                 JobsId = Guid.NewGuid(),
+                CompanyProfilesId = jobs.CompanyProfilesId,
+                LocationId = jobs.LocationId,
+                JobCategoriesId = jobs.JobCategoryId,
                 Title = jobs.Title,
                 Type = jobs.Type,
                 Description = jobs.Description,
@@ -425,13 +457,39 @@ namespace online_job_finder.Domain.Services.JobServices
                 Address = jobs.Address,
                 Status = jobs.Status,
                 Version = jobs.Version,
-                //PostedAt = jobs.PostedAt,                         
                 UpdatedAt = jobs.UpdatedAt,
                 CreatedAt = jobs.CreatedAt,
                 IsDelete = false
 
             };
         }
-
+        private ApplyJobViewModels ApplyJobViewModelsMapping(TblApplication application)
+        {
+            return new ApplyJobViewModels
+            {
+                ApplicationsId = application.ApplicationsId,
+                JobsId = application.JobsId,
+                ApplicantProfilesId = application.ApplicantProfilesId,
+                ResumesId = application.ResumesId,                
+                Version = application.Version,
+                CreatedAt = application.CreatedAt,
+                UpdatedAt = application.UpdatedAt,
+                IsDelete = application.IsDelete
+            };
+        }
+        private SavedJobViewModel SavedJobViewModelMapping(TblSavedJob job)
+        {
+            return new SavedJobViewModel
+            {
+                SavedJobsId = job.SavedJobsId,
+                JobsId = job.JobsId,
+                ApplicantProfilesId = job.ApplicantProfilesId,
+                Status = job.Status,
+                Version = job.Version,
+                CreatedAt = job.CreatedAt,
+                UpdatedAt = job.UpdatedAt,
+                IsDelete = job.IsDelete
+            };
+        }       
     }
 }
