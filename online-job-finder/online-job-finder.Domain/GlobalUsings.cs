@@ -10,4 +10,6 @@ global using System.Security.Cryptography;
 global using System.Text;
 global using System.Text.Json.Serialization;
 global using System.ComponentModel.DataAnnotations;
-
+global using online_job_finder.Domain.Services.CompanyProfileServices.CompanyProfileResponses;
+global using online_job_finder.Domain.Services.UploadImage;
+global using Microsoft.AspNetCore.Http;

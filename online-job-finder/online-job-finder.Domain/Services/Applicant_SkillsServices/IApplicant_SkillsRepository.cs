@@ -1,5 +1,4 @@
-﻿
-namespace online_job_finder.Domain.Services.Applicant_SkillsServices;
+﻿namespace online_job_finder.Domain.Services.Applicant_SkillsServices;
 
 public interface IApplicant_SkillsRepository
 {

@@ -1,41 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace online_job_finder.Domain.ViewModels;
 
-namespace online_job_finder.Domain.ViewModels
+public class CompanyUsersViewModels
 {
-    public class CompanyUsersViewModels
-    {
- 
-        //Company
-        public Guid CompanyProfilesId { get; set; }
 
-        public Guid UserId { get; set; }
+    //Company
+    public Guid CompanyProfilesId { get; set; }
 
-        public Guid LocationId { get; set; }
+    public Guid UserId { get; set; }
 
-        public string CompanyName { get; set; } = null!;
+    public Guid LocationId { get; set; }
 
-        public string Phone { get; set; } = null!;
+    public string CompanyName { get; set; } = null!;
 
-        public string Website { get; set; } = null!;
+    public string Phone { get; set; } = null!;
 
-        public string Address { get; set; } = null!;
+    public string Website { get; set; } = null!;
 
-        public string? Description { get; set; }
+    public string Address { get; set; } = null!;
 
-        public int Version { get; set; }
+    public string? Description { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+    public int Version { get; set; }
 
-        public DateTime? UpdatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 
-        //User
-        public virtual UsersViewModels User { get; set; } = null!;
+    public DateTime? UpdatedAt { get; set; }
+
+    //User
+    public virtual UsersViewModels User { get; set; } = null!;
 
 
-    }
 }

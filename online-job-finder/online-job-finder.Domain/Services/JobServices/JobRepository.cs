@@ -1,15 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Mysqlx;
-using online_job_finder.DataBase.Models;
-using online_job_finder.Domain.ViewModels;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Reflection.Metadata.BlobBuilder;
-
-namespace online_job_finder.Domain.Services.JobServices
+﻿namespace online_job_finder.Domain.Services.JobServices
 {
     public class JobRepository
     {
@@ -129,6 +118,8 @@ namespace online_job_finder.Domain.Services.JobServices
                 item.Requirements = model.Requirements;
             if (item.Salary != model.Salary)
                 item.Salary = model.Salary;
+            if (item.NumOfPosts != model.NumOfPosts)
+                item.NumOfPosts = model.NumOfPosts;
             if (!string.IsNullOrEmpty(model.Address))
                 item.Address = model.Address;
             if (item.Status != model.Status)
@@ -206,6 +197,8 @@ namespace online_job_finder.Domain.Services.JobServices
                 item.Requirements = model.Requirements;
             if (item.Salary != model.Salary)
                 item.Salary = model.Salary;
+            if (item.NumOfPosts != model.NumOfPosts)
+                item.NumOfPosts = model.NumOfPosts;
             if (!string.IsNullOrEmpty(model.Address))
                 item.Address = model.Address;
             if (item.Status != model.Status)
@@ -321,7 +314,7 @@ namespace online_job_finder.Domain.Services.JobServices
             jobApplication.Resumes = requestResume;
             _context.TblApplications.Add(jobApplication);
             var result = _context.SaveChanges();
-            return result > 0;          
+            return result > 0;
 
         }
 
@@ -346,7 +339,7 @@ namespace online_job_finder.Domain.Services.JobServices
             var requestApplicant = _context.TblApplicantProfiles.AsNoTracking()
                                    .FirstOrDefault(x => x.ApplicantProfilesId == requestModel.ApplicantProfilesId
                                    && x.IsDelete == false);
-            if(requestApplicant == null || requestJob == null)
+            if (requestApplicant == null || requestJob == null)
             {
                 return null;
             }
@@ -354,7 +347,7 @@ namespace online_job_finder.Domain.Services.JobServices
             {
                 SavedJobsId = Guid.NewGuid(),
                 JobsId = requestJob.JobsId,
-                ApplicantProfilesId = requestApplicant.ApplicantProfilesId,  
+                ApplicantProfilesId = requestApplicant.ApplicantProfilesId,
                 Status = requestModel.Status,
                 Version = requestModel.Version,
                 CreatedAt = DateTime.UtcNow,
@@ -364,7 +357,7 @@ namespace online_job_finder.Domain.Services.JobServices
 
             _context.TblSavedJobs.Add(savedJob);
             var result = _context.SaveChanges();
-            return result > 0; 
+            return result > 0;
         }
         public bool? DeleteJob(string id)
         {
@@ -470,7 +463,7 @@ namespace online_job_finder.Domain.Services.JobServices
                 ApplicationsId = application.ApplicationsId,
                 JobsId = application.JobsId,
                 ApplicantProfilesId = application.ApplicantProfilesId,
-                ResumesId = application.ResumesId,                
+                ResumesId = application.ResumesId,
                 Version = application.Version,
                 CreatedAt = application.CreatedAt,
                 UpdatedAt = application.UpdatedAt,
@@ -490,6 +483,6 @@ namespace online_job_finder.Domain.Services.JobServices
                 UpdatedAt = job.UpdatedAt,
                 IsDelete = job.IsDelete
             };
-        }       
+        }
     }
 }

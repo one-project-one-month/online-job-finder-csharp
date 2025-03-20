@@ -1,5 +1,4 @@
-﻿
-namespace online_job_finder.Domain.Services.Applicant_JobCategoryServices
+﻿namespace online_job_finder.Domain.Services.Applicant_JobCategoryServices
 {
     public interface IApplicant_JobCategoryRepository
     {

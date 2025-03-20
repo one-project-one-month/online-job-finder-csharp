@@ -1,9 +1,4 @@
-﻿using online_job_finder.DataBase.Models;
-using online_job_finder.Domain.Services.UploadImage;
-using System;
-using static System.Net.Mime.MediaTypeNames;
-
-namespace online_job_finder.Domain.Services.ApplicationServies;
+﻿namespace online_job_finder.Domain.Services.ApplicationServies;
 
 public class ApplicationRepository : IApplicationRepository
 {

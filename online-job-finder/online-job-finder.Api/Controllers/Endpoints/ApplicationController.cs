@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using online_job_finder.Domain.Services.ApplicationServies;
-using online_job_finder.Domain.Services.ResumeServices;
-
-namespace online_job_finder.Api.Controllers.Endpoints;
+﻿namespace online_job_finder.Api.Controllers.Endpoints;
 
 [Authorize(Roles = "Applicants")]
 [Route("api/application")]

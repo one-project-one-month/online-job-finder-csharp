@@ -1,11 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace online_job_finder.Domain.ViewModels;
+﻿namespace online_job_finder.Domain.ViewModels;
 
 public class ResumeViewModel
 {
