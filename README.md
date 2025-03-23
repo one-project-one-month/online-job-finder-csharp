@@ -35,23 +35,23 @@ Online Job Finder App ကို ကိုလင်းရဲ့ ဦးဆော�
 >  Admins, Recuriters, Applicants ရဲ့ အချက်အလက်များ သိမ်းရန်၊ Roles နဲ့ Users ချိတ်ဆက်ပေးရန်
 
 ```
-	User_Id uniqueidentifier
-	Role_Id uniqueidentifier
- Username nvarchar(max) 
-	Profile_Photo nvarchar(max)
-	Email nvarchar(max) 
-	PasswordHash nvarchar(max) 
-	RefreshToken nvarchar(max) 
-	RefreshTokenExpiryTime datetime2(7) 
-	Is_Information_Completed bit 
+User_Id uniqueidentifier
+Role_Id uniqueidentifier
+Username nvarchar(max) 
+Profile_Photo nvarchar(max)
+Email nvarchar(max) 
+PasswordHash nvarchar(max) 
+RefreshToken nvarchar(max) 
+RefreshTokenExpiryTime datetime2(7) 
+Is_Information_Completed bit 
 ```
 
 ### Roles
 >  Roles က Users တွေရဲ့ Roles တွေကိုသိမ်းထားပေးရန်
 
 ```
-	Role_Id uniqueidentifier 
-	Role_Name nvarchar(max) 
+Role_Id uniqueidentifier 
+Role_Name nvarchar(max) 
 ```
 
 ### Saved Jobs
@@ -187,39 +187,39 @@ Extra_Skills nvarchar(max)
 > Applicant Profiles က Applicants တွေတင်တဲ့ Resume ရေးတဲ့အခါ အလွယ်တကူဖြည့်နိုင်ရန်
 
 ```
-	Applicant_Profiles_Id uniqueidentifier
-	User_Id uniqueidentifier
-	Location_Id uniqueidentifier
-	FullName nvarchar(max)
-	Phone nvarchar(max)
-	Address nvarchar(max)
-	Description nvarchar(max) 
+Applicant_Profiles_Id uniqueidentifier
+User_Id uniqueidentifier
+Location_Id uniqueidentifier
+FullName nvarchar(max)
+Phone nvarchar(max)
+Address nvarchar(max)
+Description nvarchar(max) 
 ```
 
 ### Applicant Job Categories
 > Applicant Job Categories က Applicants တွေတင်တဲ့ Job ရှာတဲ့အခါ အလွယ်တကူ ရှာနိုင်ရန်
 
 ```
-	Applicant_Job_Categories_Id uniqueidentifier
-	Applicant_Profiles_Id uniqueidentifier
-	Job_Categories_Id uniqueidentifier
-	Reasons nvarchar(max) 
+Applicant_Job_Categories_Id uniqueidentifier
+Applicant_Profiles_Id uniqueidentifier
+Job_Categories_Id uniqueidentifier
+Reasons nvarchar(max) 
 ```
 
 ### Applicant Experiences
 > Applicant Experiences က Applicants တွေတင်တဲ့ Resume ရေးတဲ့အခါ အလွယ်တကူဖြည့်နိုင်ရန်
 
 ```
-	Applicant_Experiences_Id uniqueidentifier
-	Applicant_Profiles_Id uniqueidentifier
-	Company_Name nvarchar(max)
-	Location nvarchar(max)
-	Title nvarchar(max)
-	Description nvarchar(max) 
-	Job_Type nvarchar(max)
-	Start_Date datetime2(7)
-	End_Date datetime2(7)
-	Currently_Working bit
+Applicant_Experiences_Id uniqueidentifier
+Applicant_Profiles_Id uniqueidentifier
+Company_Name nvarchar(max)
+Location nvarchar(max)
+Title nvarchar(max)
+Description nvarchar(max) 
+Job_Type nvarchar(max)
+Start_Date datetime2(7)
+End_Date datetime2(7)
+Currently_Working bit
 ```
 
 ### Applicant Educations
