@@ -14,7 +14,7 @@ Backend Repository ကို ဒီ [Link](https://github.com/one-project-one-mo
 
 ပါ၀င်တဲ့ Table တွေကတော့
 1. Roles
-2. Users Applicant Profiles Company Profiles
+2. Users, Applicant, Profiles Company Profiles
 3. Skills, Job_Categories, Locations
 4. Jobs, Job_Skills
 5. Applicant Skills, Applicant Job Categories, Applicant Experiences, Applicant Education
