@@ -6,9 +6,9 @@
 
 Tech Stack
 
-- Backend() - .Net(EFCore) API, MSSQL
-
-Backend Repository ကို ဒီ [Link](https://github.com/one-project-one-month/online-job-finder-csharp) ကနေ စမ်းလို့ရပါတယ်
+- ASP.NET Core Web API
+- EFCore
+- MSSQL
 
 ---------------------------------
 
